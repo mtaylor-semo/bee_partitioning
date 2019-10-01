@@ -78,3 +78,4 @@ bee_sums %>%
        y = "Total Visits")
 
   
+
