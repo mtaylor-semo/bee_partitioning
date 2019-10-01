@@ -7,9 +7,9 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 
 #### Goals
 
-1. Use data from Pkye et al. (2012) to determine relationship between flower corolla size and bumble bee proboscis length.  (To Do)
+1. Use data from Pkye et al. (2012) to determine relationship between flower corolla size and bumble bee proboscis length.  (Done)
 
-2. Simulate data from Macior (1974; if available) and Pyke (1982) to calculate mean proboscis lengths for four species of bumble bees.
+2. Simulate data from Macior (1974; if available) and Pyke (1982) to calculate mean proboscis lengths for four species of bumble bees. (Partial. Have means for three species from Pleasants 1980, which uses Macior's data. Pleasants did not include standard deviations/errors. For now, using 0.1 stdev until I find out if Macior included error terms.)
 
 3. Use data from Pyke (1982) to show resource partitioning between four bumble bee species. (Done)
 
