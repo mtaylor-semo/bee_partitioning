@@ -23,11 +23,25 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 
 	Data file: bombus\_queens\_proboscis\_lengths.csv
 	
-	To do: consider writing a Shiny app for students to upload and plot histograms.
+	**To do:** consider writing a Shiny app for students to upload and plot histograms.
 	
 * Students make a scatter plot showing relationship between proboscis length and corolla length. (Is this best position for this step?)
 
 	Data file: proboscis\_corolla\_lengths.csv
+	
+* Students sum the number of visits by each *Bombus* species for four classes of corolla length. They then make a column graph to show the number of visits for each species. This will mimic the Nature Scitable figure linked above. 
+
+	Data file: bombus\_flower\_visits.csv
+	
+	**To do:** Data file currently has all species. Remove *B. flavifrons* to simplify. Still have to decide whether to keep *B. sylvicola* for further simplification. 
+
+*	Students plot relative abundances vs sites from two transects along an altitudinal gradient to show that *Bombus* species with similar proboscis lengths occur at different altitudes.
+
+	Data file: Not created yet.
+	
+	**To do:** Create data file based on Figs 5 and 6 of Pyke 1982.
+	
+**Note:* All csv files could be combined into a single Excel file for student use. Should I do this?
 
 ### Literature Cited
 
