@@ -68,7 +68,7 @@ bees_df <- tibble(appositus = appositus_queen,
                   sylvicola = sylvicola_queen)
 
 # Save the file.
-write_csv(bees_df, "bombus_queens.csv")
+write_csv(bees_df, "bombus_queen_proboscis_lengths.csv")
 
 
 ## Not used right now.
