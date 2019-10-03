@@ -6,7 +6,9 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 
 
 #### Goals
-2. Simulate data from Macior (1974; if available) and Pyke (1982) to calculate mean proboscis lengths for six species of Bombus. (Done)
+1. Simulate data from Macior (1974; if available) and Pyke (1982) to calculate mean proboscis lengths for six species of Bombus. (Done)
+
+	
 
 1. Use data from Pkye et al. (2012) to determine relationship between flower corolla size and bumble bee proboscis length.  (Done)
 
@@ -15,6 +17,10 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 	Data to recreate the bumble bee partitioning figure from [this Nature Scitable article](https://www.nature.com/scitable/knowledge/library/resource-partitioning-and-why-it-matters-17362658/) is taken from [Pkye (1982).](https://www.jstor.org/stable/1938970)
 
 4. Use data from Pyke (1982) to show differences in altitude for the four bumble species. (To do)
+
+#### Analysis steps
+
+* Students will calculate mean, standard deviation, and standard error for all six species. They will either make a histogram by hand for 1-2 species, or use software to make histograms for all six species.
 
 ### Literature Cited
 
