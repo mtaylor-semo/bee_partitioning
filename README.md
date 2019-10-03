@@ -15,7 +15,7 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 
 	Data to recreate the bumble bee partitioning figure from [this Nature Scitable article](https://www.nature.com/scitable/knowledge/library/resource-partitioning-and-why-it-matters-17362658/) is taken from [Pkye (1982).](https://www.jstor.org/stable/1938970)
 
-4. Use data from Pyke (1982) to show differences in altitude for the four bumble species. (To do)
+4. Use data from Pyke (1982) to show differences in altitude for the five bumble species. (Done)
 
 #### Analysis steps
 
@@ -37,9 +37,8 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 
 *	Students plot relative abundances vs sites from two transects along an altitudinal gradient to show that *Bombus* species with similar proboscis lengths occur at different altitudes.
 
-	Data file: Not created yet.
+	Data file: transects.xlsx (need csv files?)
 	
-	**To do:** Create data file based on Figs 5 and 6 of Pyke 1982.
 	
 **Note:* All csv files could be combined into a single Excel file for student use. Should I do this?
 
