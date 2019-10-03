@@ -7,7 +7,6 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 
 #### Goals
 1. Simulate data from Macior (1974; if available) and Pyke (1982) to calculate mean proboscis lengths for six species of Bombus. (Done)
-
 	
 
 1. Use data from Pkye et al. (2012) to determine relationship between flower corolla size and bumble bee proboscis length.  (Done)
@@ -21,6 +20,14 @@ Students will use data from Pyke 1982 and other sources to analyze resource part
 #### Analysis steps
 
 * Students will calculate mean, standard deviation, and standard error for all six species. They will either make a histogram by hand for 1-2 species, or use software to make histograms for all six species.
+
+	Data file: bombus\_queens\_proboscis\_lengths.csv
+	
+	To do: consider writing a Shiny app for students to upload and plot histograms.
+	
+* Students make a scatter plot showing relationship between proboscis length and corolla length. (Is this best position for this step?)
+
+	Data file: proboscis\_corolla\_lengths.csv
 
 ### Literature Cited
 
