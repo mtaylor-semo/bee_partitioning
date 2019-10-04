@@ -9,6 +9,17 @@
 #Alpha = 0
 Alpha = 1
 
+# Use these for labeling the axes with proper scientific names.
+bombus_species_alphabetical <- c("B. appositus", 
+                                "B. bifarius", 
+                                "B. frigidus", 
+                                "B. kirbiellus", 
+                                "B. sylvicola")
+bombus_species_size <- c("B. appositus", 
+                        "B. kirbiellus", 
+                        "B. bifarius", 
+                        "B. frigidus", 
+                        "B. sylvicola")
 # Queen proboscis lengths -------------------------------------------------
 #
 # First plot of exercise to show mean and standard deviation 
@@ -41,7 +52,6 @@ example_df <- tibble(species = "example",
                      mean = 10.2, 
                      stdev = 0.4)
 
-
 bombus_plot <- 
   bomb %>% 
   ggplot() +
@@ -55,6 +65,7 @@ bombus_plot <-
   labs(y = "Mean (mm)",
        x = NULL) +
   theme_bw() +
+  scale_x_discrete(labels = bombus_species_alphabetical) +
   theme(axis.text.x = element_text(face = "italic")) +
   theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
   theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
@@ -101,7 +112,6 @@ ggsave("mean_proboscis_plot_key.png",
 #
 # Scatterplot of proboscis v corolla length.
 
-Alpha = 0
 
 pc_length <- read_csv("proboscis_corolla_lengths.csv")
 
@@ -140,5 +150,101 @@ ggsave("proboscis_corolla_key.png",
        units = "in")
 
 
+
+# Bombus flower visits ----------------------------------------------------
+# 
+# Make column charts of number of visits by each species to 
+# each size class of corollas. 
+
+bees_raw <- read_csv("bombus_flower_visits.csv", 
+                     skip = 2,
+                     #na = 0,
+                     col_names = c(
+                       "plant_species",
+                       "corolla_length",
+                       "appositus",
+                       "kirbiellus",
+                       "flavifrons",
+                       "sylvicola",
+                       "bifarius",
+                       "frigidus",
+                       "occidentalis"
+                     ))
+bees <- 
+  bees_raw %>% 
+  gather(key = "bombus_species",
+         value = visits,
+         appositus,
+         kirbiellus,
+         bifarius,
+         frigidus,
+         sylvicola) %>% 
+  select(-flavifrons, -occidentalis) %>% 
+  mutate(bee_group = case_when(
+    bombus_species == "appositus" | 
+      bombus_species == "kirbyellus" ~ "Group 1",
+    TRUE ~ "Group 2")) %>% 
+  mutate(bee_group = factor(bee_group,
+                            levels = c("Group 1", "Group 2"),
+                            ordered = TRUE))
+
+bees <- bees %>% 
+  mutate(corolla_group = case_when(
+    corolla_length < 4.0 ~ "0",
+    corolla_length >= 4.0 &
+      corolla_length < 8.0 ~ "4",
+    corolla_length > 8.0 &
+      corolla_length < 12.0 ~ "8",
+    TRUE ~ "12")) %>% 
+  mutate(corolla_group = factor(corolla_group,
+                                levels = c("0", "4", "8", "12",
+                                           ordered = TRUE)))
+
+bee_sums <- bees %>% 
+  group_by(bombus_species, corolla_group) %>% 
+  summarize(total_visits = sum(visits, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate(bombus_species = factor(bombus_species,
+                                 levels = c(
+                                   "appositus",
+                                   "kirbiellus",
+                                   "bifarius",
+                                   "frigidus",
+                                   "sylvicola"
+                                 ),
+                                 labels = c(
+                                   "B. appositus",
+                                   "B. kirbiellus",
+                                   "B. bifarius",
+                                   "B. frigidus",
+                                   "B. sylvicola"
+                                 ),
+                                 ordered = TRUE))
+
+Alpha = 1
+bombus_flower_visits <- 
+  bee_sums %>% 
+  ggplot() +
+  geom_col(aes(x = corolla_group, y = total_visits),
+           alpha = Alpha) +
+  facet_grid(rows = vars(bombus_species)) +
+  theme_bw() +
+  labs(x = "Corolla Size Group (mm, minimum)",
+       y = "Total Visits") +
+  theme(strip.text.y = element_text(face = "italic"))
+
+# Use this one when Alpha = 0
+ggsave("flower_visits_blank.png", 
+       bombus_flower_visits, 
+       width = 4, 
+       height = 7,
+       units = "in")
+
+## Use this one when Alpha = 1
+ggsave("flower_visits_key.png", 
+       bombus_flower_visits, 
+       width = 4, 
+       height = 7,
+       units = "in")
 
 
