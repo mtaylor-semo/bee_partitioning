@@ -1,0 +1,266 @@
+%!TEX TS-program = lualatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt, hidelinks]{exam}
+
+%\printanswers
+
+\usepackage{graphicx}
+	\graphicspath{{/Users/goby/Pictures/teach/163/lab/}
+	{img/}} % set of paths to search for images
+
+\usepackage{geometry}
+\geometry{letterpaper, left=1.5in, bottom=1in}                   
+%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{amssymb, amsmath}
+\usepackage{mathtools}
+	\everymath{\displaystyle}
+
+\usepackage{fontspec}
+\setmainfont[Ligatures={TeX}, BoldFont={* Bold}, ItalicFont={* Italic}, BoldItalicFont={* BoldItalic}, Numbers={Proportional, OldStyle}]{Linux Libertine O}
+\setsansfont[Scale=MatchLowercase,Ligatures=TeX, Numbers={Proportional,OldStyle}]{Linux Biolinum O}
+\setmonofont[Scale=MatchLowercase]{Linux Libertine Mono O}
+\newfontfamily{\liningnum}[Numbers=Lining]{Linux Libertine O}
+\usepackage{microtype}%
+
+\usepackage[table]{xcolor}
+
+\usepackage[bold-style=ISO]{unicode-math}
+\setmathfont[Scale=MatchLowercase]{Tex Gyre Pagella Math}
+
+\usepackage{tikz}
+
+\usepackage{pifont} % Use the x mark in the final section.
+
+\usepackage{booktabs}
+\usepackage{multicol}
+
+
+\usepackage{caption}
+\captionsetup{format=plain, justification=raggedright, singlelinecheck=off,labelsep=period,skip=3pt} % Removes colon following figure / table number.
+
+%\usepackage{caption}
+%\captionsetup{font=small} 
+%\captionsetup{singlelinecheck=false}
+%\captionsetup[figure]{labelsep=period, format=plain}
+
+\usepackage{longtable}
+\usepackage{caption}
+\captionsetup{format=plain, justification=raggedright, singlelinecheck=off,labelsep=period,skip=3pt} 
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+\usepackage{enumitem}
+\setlist{leftmargin=*}
+\setlist[1]{labelindent=\parindent}
+\setlist[enumerate]{label=\textsc{\alph*}.}
+\setlist[itemize]{label=\color{white}\textbullet}
+
+\usepackage{hyperref}
+%\usepackage{placeins} %PRovides \FloatBarrier to flush all floats before a certain point.
+\usepackage{hanging}
+
+\usepackage[sc]{titlesec}
+
+%% Commands for Exam class
+\renewcommand{\solutiontitle}{\noindent}
+\unframedsolutions
+\SolutionEmphasis{\bfseries}
+
+\renewcommand{\questionshook}{%
+	\setlength{\leftmargin}{-\leftskip}%
+}
+
+%Change \half command from 1/2 to .5
+\renewcommand*\half{.5}
+
+\pagestyle{headandfoot}
+\firstpageheader{\textsc{bi}\,063 Evolution and Ecology}{}{\ifprintanswers\textbf{KEY}\else Name: \enspace \makebox[2.5in]{\hrulefill}\fi}
+\runningheader{}{}{\footnotesize{pg. \thepage}}
+\footer{}{}{}
+\runningheadrule
+
+\newcommand*\AnswerBox[2]{%
+    \parbox[t][#1]{0.92\textwidth}{%
+    \begin{solution}#2\end{solution}}
+    \vspace{\stretch{1}}
+}
+
+\newenvironment{AnswerPage}[1]
+    {\begin{minipage}[t][#1]{0.92\textwidth}%
+    \begin{solution}}
+    {\end{solution}\end{minipage}
+    \vspace{\stretch{1}}}
+
+\newlength{\basespace}
+\setlength{\basespace}{5\baselineskip}
+
+
+\newcommand\chisq{$\chi^2$}
+\newcommand*\meanY{\overline{Y}\kern0.67pt}
+
+\newcommand*\AnswerBlank[1]{%
+	\ifprintanswers%
+		\textbf{#1}
+	\else%
+		\rule{0.75in}{0.4pt}\kern0.67pt.\fi%
+	}
+
+%\newcommand*\AnswerBlank{\rule{0.75in}{0.4pt}\kern0.67pt.}
+\newcommand*\xcell[1]{cell~\liningnum{#1}}
+
+%
+%\makeatletter
+%\def\SetTotalwidth{\advance\linewidth by \@totalleftmargin
+%\@totalleftmargin=0pt}
+%\makeatother
+
+
+
+\begin{document}
+
+\subsection*{Resource partitioning: \textit{Bombus} bumble bees}
+
+Resource partitioning allows more species to co-occur in a community.
+Coexisting species that use one or more resources in the same way compete
+with each other for the resources. Competition is reduced if species
+use resources in different ways.
+
+\textbf{Build but keep it short}
+
+Equations for you to recall:
+
+
+where,
+
+\begin{itemize}
+	\item $N_1$ is the estimated population size,
+	\item $M_1$ is the number of marked individuals released into the
+	population from the first capture,
+	\item $n_2$ is the number of
+	individuals taken in the second sample, and
+	\item $M_{12}$ is the
+	number of individuals in the second sample that were marked during the
+	first sample.
+\end{itemize}
+
+
+You will analyze a variety of data to explore resource partitioning for five
+species of bumble bees in the genus \textit{Bombus.} These data were collected
+by Macior (1974), Pyke (1982), and Pyke et~al.~(2012) near Crested Butte, Colorado,
+southwest of Denver. 
+
+Researchers walked transects (paths) counting species of bumble bees and the 
+species of flowers visited by the bees for pollen and nectar. They walked
+three transects and counted a total of 13,136 individuals for 12 species of 
+\textit{Bombus} (Pyke 1982).
+
+For simplicity, you'll use data for five of the species most commonly sighted along two of the transects.
+
+
+\subsubsection*{Analysis: proboscis lengths}
+
+Download bombus\_data.xlsx\footnote{All data currently in one
+spreadsheet.} and click on the “Proboscis Lengths” tab. The sheet
+has proboscis lengths from 50 individuals for each of five \textit{Bombus} species. All measurements are in millimeters (mm).
+
+Use the \texttt{average} function in Excel to calculate the mean $\left(\meanY\right)$ proboscis length for each species. Use the \texttt{stdev.s} function
+to calculate the sample standard deviation $\left(s\right)$ for each species. %Use the \texttt{count} and \texttt{sqrt} functions to calculate standard 
+%error of the mean. As a reminder, the equation to calculate $\mathrm{SE}_{\meanY}$ is
+%
+%\begin{equation*} \label{eq:stderr}
+%\mathrm{SE}_{\meanY} = \dfrac{s}{\sqrt{n}}
+%\end{equation*}
+%
+%where $s$ is the standard deviation of the sample and $n$ is the sample size. 
+
+\newpage
+
+\begin{questions}
+
+\question
+Fill in the blanks for the five \textit{Bombus} species.
+
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Species & $\meanY$ & $s$ \tabularnewline
+\midrule
+& &  \tabularnewline
+\textit{B.~appositus} & 
+\ifprintanswers \textbf{12.8} \else \rule{1in}{0.4pt} &
+\ifprintanswers \textbf{0.4} \else \rule{1in}{0.4pt}  
+\tabularnewline[2em]
+%
+\textit{B.~bifarius} &
+\ifprintanswers \textbf{8.5} \else  \rule{1in}{0.4pt} &
+\ifprintanswers \textbf{0.4} \else \rule{1in}{0.4pt} 
+\tabularnewline[2em]
+%
+\textit{B.~frigidus} & 
+\ifprintanswers \textbf{7.3} \else \rule{1in}{0.4pt} &
+\ifprintanswers \textbf{0.3} \else \rule{1in}{0.4pt} 
+\tabularnewline[2em]
+%
+\textit{B.~kirbiellus} &
+\ifprintanswers \textbf{12.1} \else \rule{1in}{0.4pt} & 
+\ifprintanswers \textbf{0.4} \else \rule{1in}{0.4pt} 
+\tabularnewline[2em]
+%
+\textit{B.~sylvicola} & 
+\ifprintanswers \textbf{8.4} \else \rule{1in}{0.4pt} & 
+\ifprintanswers \textbf{0.5} \else \rule{1in}{0.4pt} 
+\tabularnewline
+
+\bottomrule
+\end{tabular}
+
+\bigskip
+
+\question
+Sketch a graph of the means with the standard deviations. Mark a 
+large point above each species name at the proper height for the 
+mean. Draw a thin vertical line that extends above and below the 
+mean by the amount of the deviation. For example, if the mean is 
+10.0~mm and the standard deviation is 0.3~mm, mark a point at 
+10.0, and then draw a thin line from 9.7 (10.0\,$-$\,0.3) to 10.3 (10.0\,$+$\,0.3). \textbf{Include example on graph}
+
+
+\begin{tikzpicture}
+\draw[help lines, color=gray!30, step=0.25cm] (-7,-6) grid (7,6);
+
+\end{tikzpicture}
+
+
+\subsubsection*{Second capture-mark-release}\label{sec:second_mark}
+
+
+
+\question[Checkout]
+If migration occurred in a natural population being studied, how
+would this influence the reliability of your estimate of population size
+determined using the mark-and-recapture technique?
+
+
+\end{questions}
+
+
+\subsubsection*{Literature Cited}
+
+\begin{hangparas}{\leftmargin}{1}
+
+Macior, L.\,W. 1974. Pollination ecology of the front
+range of the Colorado Rocky Mountains. Melanderia 15: 1–59.
+
+Pyke, G.\,H. 1982. Local geographic distributions of bumblebees 
+near Crested Butte, Colorado: competition and community structure.
+Ecology 63: 555–573.
+
+Pyke, G.\,H., D.\,W.\,Inouye, and J.\,D.\,Thomson. 2012. Local geographic distributions of bumble bees near Crested Butte, Colorado: competition and community structure revisited. Environmental Entomology 41: 1332–1349.
+
+\end{hangparas}
+
+\end{document}  
