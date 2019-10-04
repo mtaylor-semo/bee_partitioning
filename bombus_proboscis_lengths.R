@@ -8,6 +8,7 @@
 ## average but qualitative results are the same.
 
 library(tidyverse)
+library(patchwork)
 #library(ggthemes)
 
 frigidus_queen <- rnorm(mean = 7.27, sd = 0.37, n = 50)
@@ -70,70 +71,6 @@ bees_df <- tibble(appositus = appositus_queen,
 # Save the file.
 write_csv(bees_df, "bombus_queen_proboscis_lengths.csv")
 
-
-## Read in data to plot
-bombus_raw <- read_csv("bombus_queen_proboscis_lengths.csv")
-
-bombus <- bombus_raw %>% 
-  select(-flavifrons) %>% 
-  gather(key = species, 
-         value = length)
-
-bomb <- bombus %>% 
-  group_by(species) %>% 
-  summarise(mean = mean(length),
-            stdev = sd(length)) %>% 
-#  add_row(species = "example", mean = 10.0, stdev = 0.3) %>% 
-  mutate(species = factor(species, 
-                          levels = c(#"example", 
-                                     "appositus", 
-                                     "bifarius", 
-                                     "frigidus",
-                                     "kirbiellus",
-                                     "sylvicola"),
-                          ordered = TRUE))
-
-example_df <- tibble(species = "example", 
-                     mean = 10, 
-                     stdev = 0.3) %>% 
-  mutate(species = factor(species, levels = "example", ordered = TRUE))
-
-bomb %>% 
-  ggplot() +
-  geom_linerange(aes(x = species,
-                     ymin = mean - stdev,
-                     ymax = mean + stdev)) + 
-  geom_point(aes(x = species,
-                 y = mean)) +
-  geom_point(data = example_df,
-             aes(x = species,
-                 y = mean)) +
-  labs(y = "Mean (mm)",
-       x = NULL) +
-  theme_bw() +
-  theme(axis.text.x = element_text(face = "italic")) +
-  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
-  theme(panel.grid.major.y = element_line(color = "gray90", size = 0.2)) +
-  scale_y_continuous(minor_breaks = seq(6, 14, 0.1), 
-                     breaks = seq(6,14,1)) +
-  expand_limits(y = c(7, 13))
-
-example_df %>% 
-  ggplot() +
-  geom_linerange(aes(x = species,
-                     ymin = mean - stdev,
-                     ymax = mean + stdev)) + 
-  geom_point(data = example_df,
-             aes(x = species,
-                 y = mean)) +
-  labs(y = "Mean (mm)",
-       x = NULL) +
-  theme_bw() +
-  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
-  theme(panel.grid.major.y = element_line(color = "gray90", size = 0.2)) +
-  scale_y_continuous(minor_breaks = seq(6, 14, 0.1), 
-                     breaks = seq(6,14,1)) +
-  expand_limits(y = c(6.8,13.2))
 
 ## Not used right now.
 
