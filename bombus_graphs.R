@@ -5,14 +5,6 @@ library(patchwork)
 ## of the different data.
 
 
-# Set Alpha value to 0 or 1 to hide or show results.
-# Use Alpha = 0 to make blank graphs for students to complete.
-# Use Alpha = 1 to make plots for the answer key.
-
-#Alpha = 0
-Alpha = 1
-
-
 # Functions ---------------------------------------------------------------
 
 save_plot <- function(save_name = "plot.png",
@@ -27,19 +19,29 @@ save_plot <- function(save_name = "plot.png",
          units = units)
 }
   
-  
-  
-# Use these for labeling the axes with proper scientific names.
+
+# Shared constants --------------------------------------------------------
+
+# Use these for labeling factors so that the
+# axis labels and legends have proper scientific names.
+
 bombus_species_alphabetical <- c("B. appositus", 
                                 "B. bifarius", 
                                 "B. frigidus", 
                                 "B. kirbiellus", 
                                 "B. sylvicola")
+
 bombus_species_size <- c("B. appositus", 
                         "B. kirbiellus", 
                         "B. bifarius", 
                         "B. frigidus", 
                         "B. sylvicola")
+
+###########################################################################
+## Begin plots
+##
+
+
 # Queen proboscis lengths -------------------------------------------------
 #
 # First plot of exercise to show mean and standard deviation 
@@ -47,11 +49,10 @@ bombus_species_size <- c("B. appositus",
 # be practical for graphing.
 
 ## Read in data to plot
-bombus_raw <- read_csv("proboscis_lengths.csv")
-
-bombus <- bombus_raw %>% 
+bombus <- read_csv("proboscis_lengths.csv") %>% 
   gather(key = species, 
          value = length)
+
 
 bomb <- bombus %>% 
   group_by(species) %>% 
@@ -71,6 +72,8 @@ example_df <- tibble(species = "example",
                      mean = 10.2, 
                      stdev = 0.4)
 
+Alpha = 0 #0 for blank plot, 1 for full plot
+
 bombus_plot <- 
   bomb %>% 
   ggplot() +
@@ -88,9 +91,10 @@ bombus_plot <-
   theme(axis.text.x = element_text(face = "italic")) +
   theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
   theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
-  scale_y_continuous(minor_breaks = seq(6, 14, 0.1), 
-                     breaks = seq(6,14,1)) +
-  expand_limits(y = c(7, 13))
+  scale_y_continuous(limits = c(6,14),
+                     minor_breaks = seq(6, 14, 0.1), 
+                     breaks = seq(6,14,1),
+                     expand = c(0.01,0.01))
 
 example_plot <- 
   example_df %>% 
@@ -106,26 +110,22 @@ example_plot <-
   theme_bw() +
   theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
   theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
-  scale_y_continuous(minor_breaks = seq(6, 14, 0.1), 
-                     breaks = seq(6,14,1)) +
-  expand_limits(y = c(6.8,13.2))
+  scale_y_continuous(limits = c(6,14),
+                     minor_breaks = seq(6, 14, 0.1), 
+                     breaks = seq(6,14,1),
+                     expand = c(0.01,0.01))
 
 final_plot <- bombus_plot + example_plot + plot_layout(nrow = 1, widths = c(5,1))
 
-# Use this one when Alpha = 0
-ggsave("mean_proboscis_plot_blank.png", 
-       final_plot, 
-       width = 6, 
-       height = 3,
-       units = "in")
 
-## Use this one when Alpha = 1
-ggsave("mean_proboscis_plot_key.png", 
-       final_plot, 
-       width = 6, 
-       height = 3,
-       units = "in")
+save_file <- ifelse(Alpha == 0,
+                    "mean_proboscis_plot_blank.png", # Alpha = 0
+                    "mean_proboscis_plot_key.png")   # Alpha = 1
 
+save_plot(save_name = save_file, 
+          plot_name = final_plot,
+          width = 6,
+          height = 3)
 
 # Proboscis vs corolla length ---------------------------------------------
 #
@@ -133,6 +133,8 @@ ggsave("mean_proboscis_plot_key.png",
 
 
 pc_length <- read_csv("proboscis_corolla_lengths.csv")
+
+Alpha = 0 #0 for blank plot, 1 for full plot
 
 proboscis_corolla_plot <- pc_length %>% 
   ggplot(aes(x = proboscis,
@@ -146,14 +148,14 @@ proboscis_corolla_plot <- pc_length %>%
        y = "Mean corolla length (mm)") +
   theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
   theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
-  scale_y_continuous(minor_breaks = seq(3, 15, 0.1), 
-                     breaks = seq(3, 15, 1)) +
-  scale_x_continuous(minor_breaks = seq(5, 13, 0.1), 
-                     breaks = seq(5, 13, 1)) #+
-#  expand_limits(x = c(3.6, 14.4),
-#                y = c(6, 13.6))
-
-
+  scale_y_continuous(limits = c(3,15),
+                     minor_breaks = seq(3, 15, 0.1), 
+                     breaks = seq(3, 15, 1),
+                     expand = c(0.02, 0.02)) +
+  scale_x_continuous(limits = c(5, 13),
+                     minor_breaks = seq(5, 13, 0.1), 
+                     breaks = seq(5, 13, 1),
+                     expand = c(0.01, 0.01)) 
 
 save_file <- ifelse(Alpha == 0,
                     "proboscis_corolla_blank.png", # Alpha = 0
@@ -165,16 +167,13 @@ save_plot(save_name = save_file,
           height = 3)
 
 
-
 # Bombus flower visits ----------------------------------------------------
 # 
 # Make column charts of number of visits by each species to 
 # each size class of corollas. 
 
-
 bees_raw <- read_csv("bombus_flower_visits.csv", 
                      skip = 2,
-                     #na = 0,
                      col_names = c(
                        "plant_species",
                        "corolla_length",
@@ -232,8 +231,7 @@ bee_sums <- bees %>%
                                  labels = bombus_species_size,
                                  ordered = TRUE))
 
-Alpha = 0 
-Alpha = 1
+Alpha = 0 #0 for blank plot, 1 for full plot
 
 flower_visits <- 
   bee_sums %>% 
@@ -242,8 +240,8 @@ flower_visits <-
            alpha = Alpha) +
   facet_grid(rows = vars(bombus_species)) +
   theme_bw() +
-  labs(x = "Corolla Size Group (mm, minimum)",
-       y = "Total Visits") +
+  labs(x = "Corolla size group (mm, minimum)",
+       y = "Total visits") +
   theme(strip.text.y = element_text(face = "italic"))
 
 save_file <- ifelse(Alpha == 0,
@@ -254,17 +252,6 @@ save_plot(save_name = save_file,
           plot_name = flower_visits,
           width = 4,
           height = 7)
-
-
-
-# Use this one when Alpha = 0
-ggsave(save_file, 
-       bombus_flower_visits, 
-       width = 4, 
-       height = 7,
-       units = "in")
-
-
 
 
 # Transect altitude plots -------------------------------------------------
