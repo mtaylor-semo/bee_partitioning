@@ -1,3 +1,6 @@
+library(tidyverse)
+library(patchwork)
+
 ## Script to create blank and answer key graphs
 ## of the different data.
 
@@ -9,6 +12,23 @@
 #Alpha = 0
 Alpha = 1
 
+
+# Functions ---------------------------------------------------------------
+
+save_plot <- function(save_name = "plot.png",
+                      plot_name = last_plot(), 
+                      width = 6,
+                      height = 6,
+                      units = "in") {
+  ggsave(filename = save_name, 
+         plot = plot_name, 
+         width = width,
+         height = height,
+         units = units)
+}
+  
+  
+  
 # Use these for labeling the axes with proper scientific names.
 bombus_species_alphabetical <- c("B. appositus", 
                                 "B. bifarius", 
@@ -27,10 +47,9 @@ bombus_species_size <- c("B. appositus",
 # be practical for graphing.
 
 ## Read in data to plot
-bombus_raw <- read_csv("bombus_queen_proboscis_lengths.csv")
+bombus_raw <- read_csv("proboscis_lengths.csv")
 
 bombus <- bombus_raw %>% 
-  select(-flavifrons) %>% 
   gather(key = species, 
          value = length)
 
@@ -115,7 +134,7 @@ ggsave("mean_proboscis_plot_key.png",
 
 pc_length <- read_csv("proboscis_corolla_lengths.csv")
 
-prob_cor_plot <- pc_length %>% 
+proboscis_corolla_plot <- pc_length %>% 
   ggplot(aes(x = proboscis,
              y = corolla)) +
   geom_point(alpha = Alpha) +
@@ -135,19 +154,15 @@ prob_cor_plot <- pc_length %>%
 #                y = c(6, 13.6))
 
 
-# Use this one when Alpha = 0
-ggsave("proboscis_corolla_blank.png", 
-       prob_cor_plot, 
-       width = 6, 
-       height = 3,
-       units = "in")
 
-## Use this one when Alpha = 1
-ggsave("proboscis_corolla_key.png", 
-       prob_cor_plot, 
-       width = 6, 
-       height = 3,
-       units = "in")
+save_file <- ifelse(Alpha == 0,
+                    "proboscis_corolla_blank.png", # Alpha = 0
+                    "proboscis_corolla_key.png")   # Alpha = 1
+
+save_plot(save_name = save_file, 
+          plot_name = proboscis_corolla_plot,
+          width = 6,
+          height = 3)
 
 
 
@@ -155,6 +170,7 @@ ggsave("proboscis_corolla_key.png",
 # 
 # Make column charts of number of visits by each species to 
 # each size class of corollas. 
+
 
 bees_raw <- read_csv("bombus_flower_visits.csv", 
                      skip = 2,
@@ -170,6 +186,7 @@ bees_raw <- read_csv("bombus_flower_visits.csv",
                        "frigidus",
                        "occidentalis"
                      ))
+
 bees <- 
   bees_raw %>% 
   gather(key = "bombus_species",
@@ -182,7 +199,7 @@ bees <-
   select(-flavifrons, -occidentalis) %>% 
   mutate(bee_group = case_when(
     bombus_species == "appositus" | 
-      bombus_species == "kirbyellus" ~ "Group 1",
+      bombus_species == "kirbiellus" ~ "Group 1",
     TRUE ~ "Group 2")) %>% 
   mutate(bee_group = factor(bee_group,
                             levels = c("Group 1", "Group 2"),
@@ -212,17 +229,13 @@ bee_sums <- bees %>%
                                    "frigidus",
                                    "sylvicola"
                                  ),
-                                 labels = c(
-                                   "B. appositus",
-                                   "B. kirbiellus",
-                                   "B. bifarius",
-                                   "B. frigidus",
-                                   "B. sylvicola"
-                                 ),
+                                 labels = bombus_species_size,
                                  ordered = TRUE))
 
+Alpha = 0 
 Alpha = 1
-bombus_flower_visits <- 
+
+flower_visits <- 
   bee_sums %>% 
   ggplot() +
   geom_col(aes(x = corolla_group, y = total_visits),
@@ -233,18 +246,201 @@ bombus_flower_visits <-
        y = "Total Visits") +
   theme(strip.text.y = element_text(face = "italic"))
 
+save_file <- ifelse(Alpha == 0,
+                    "flower_visits_blank.png", # Alpha = 0
+                    "flower_visits_key.png")   # Alpha = 1
+
+save_plot(save_name = save_file, 
+          plot_name = flower_visits,
+          width = 4,
+          height = 7)
+
+
+
 # Use this one when Alpha = 0
-ggsave("flower_visits_blank.png", 
+ggsave(save_file, 
        bombus_flower_visits, 
        width = 4, 
        height = 7,
        units = "in")
 
-## Use this one when Alpha = 1
-ggsave("flower_visits_key.png", 
-       bombus_flower_visits, 
-       width = 4, 
-       height = 7,
-       units = "in")
+
+
+
+# Transect altitude plots -------------------------------------------------
+#
+# Plot relative abundance of each species within a proboscis length
+# class along the altitudinal transects.
+
+wash_tran <- read_csv("washington_transect.csv",
+                      skip = 1,
+                      col_names = c(
+                        "site_number",
+                        "appositus",
+                        "kirbiellus",
+                        "bifarius",
+                        "frigidus",
+                        "sylvicola"
+                      )) %>% 
+  gather(key = species, 
+         value = relative_abundance, 
+         appositus,
+         kirbiellus,
+         bifarius,
+         frigidus,
+         sylvicola)
+
+scho_tran <- read_csv("schofield_transect.csv",
+                      skip = 1,
+                      col_names = c(
+                        "site_number",
+                        "appositus",
+                        "kirbiellus",
+                        "bifarius",
+                        "frigidus",
+                        "sylvicola"
+                      )) %>% 
+  gather(key = species, 
+         value = relative_abundance, 
+         appositus,
+         kirbiellus,
+         bifarius,
+         frigidus,
+         sylvicola)
+
+## Long proboscis group
+wash_long <- wash_tran %>% 
+  filter(species == "appositus" |
+           species == "kirbiellus") %>% 
+  mutate(species = factor(species,
+                          levels = c("appositus", "kirbiellus"),
+                          labels = c("B. appositus", "B. kirbiellus"),
+                          ordered = TRUE))
+
+## Short proboscis group
+wash_short <- wash_tran %>% 
+  filter(species != "appositus" &
+           species != "kirbiellus") %>% 
+  mutate(species = factor(species,
+                          levels = c("bifarius", "frigidus", "sylvicola"),
+                          labels = c("B. bifarius", "B. frigidus", "B. sylvicola"),
+                          ordered = TRUE))
+
+## Long proboscis group
+scho_long <- scho_tran %>% 
+  filter(species == "appositus" |
+           species == "kirbiellus") %>% 
+  mutate(species = factor(species,
+                          levels = c("appositus", "kirbiellus"),
+                          labels = c("B. appositus", "B. kirbiellus"),
+                          ordered = TRUE))
+
+# Short proboscis group
+scho_short <- scho_tran %>% 
+  filter(species != "appositus" &
+           species != "kirbiellus") %>% 
+  mutate(species = factor(species,
+                          levels = c("bifarius", "frigidus", "sylvicola"),
+                          labels = c("B. bifarius", "B. frigidus", "B. sylvicola"),
+                          ordered = TRUE))
+
+
+Alpha = 0 #0 for blank plot, 1 for full plot
+
+## Washington transect, long proboscis
+wl_plot <- wash_long %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = relative_abundance,
+                lty = species),
+            alpha = Alpha) +
+  theme_bw() +
+  labs(x = NULL,
+       y = "Relative abundance",
+       title = "Washington Transect") +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
+  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(legend.position = "none") +
+  scale_y_continuous(limits = c(0, 1),
+                     minor_breaks = seq(0, 1, 0.01), 
+                     breaks = seq(0, 1, 0.1),
+                     expand = c(0.01, 0.01)) +
+  scale_x_continuous(breaks = seq(1, 8, 1))
+  
+## Washington transect, short proboscis
+ws_plot <- wash_short %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = relative_abundance,
+                lty = species),
+            alpha = Alpha) +
+  theme_bw() +
+  labs(x = "Site number",
+       y = "Relative abundance") +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
+  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(legend.position = "none") +
+  scale_y_continuous(limits = c(0, 1),
+                     minor_breaks = seq(0, 1, 0.01), 
+                     breaks = seq(0, 1, 0.1),
+                     expand = c(0.01, 0.01)) +
+  scale_x_continuous(breaks = seq(1, 8, 1))
+
+
+## Schofield transect, long proboscis
+sl_plot <- scho_long %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = relative_abundance,
+                lty = species),
+            alpha = Alpha) +
+  theme_bw() +
+  labs(x = NULL,
+       y = NULL,
+       lty = "Long proboscis",
+       title = "Schofield Transect") +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
+  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  guides(lty = guide_legend(label.theme = element_text(face = "italic",
+                                                       size = 9))) +
+  scale_y_continuous(limits = c(0, 1),
+                     minor_breaks = seq(0, 1, 0.01), 
+                     breaks = seq(0, 1, 0.1),
+                     expand = c(0.01, 0.01)) +
+  scale_x_continuous(breaks = seq(1, 6, 1))
+
+## Washington transect, short proboscis
+ss_plot <- scho_short %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = relative_abundance,
+                lty = species),
+            alpha = Alpha) +
+  theme_bw() +
+  labs(x = "Site number",
+       y = NULL,
+       lty = "Short proboscis") +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
+  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  guides(lty = guide_legend(label.theme = element_text(face = "italic",
+                                                       size = 9))) +
+  scale_y_continuous(limits = c(0, 1),
+                     minor_breaks = seq(0, 1, 0.01), 
+                     breaks = seq(0, 1, 0.1),
+                     expand = c(0.01, 0.01)) +
+  scale_x_continuous(breaks = seq(1, 6, 1))
+
+
+transect_plots <- wl_plot + sl_plot + ws_plot + ss_plot + plot_layout(ncol = 2)
+
+save_file <- ifelse(Alpha == 0, 
+                    "transect_relative_abundance_blank.png", # Alpha = 0
+                    "transect_relative_abundance_key.png")   # Alpha = 1
+
+
+save_plot(save_name = save_file, 
+          plot_name = transect_plots,
+          width = 6,
+          height = 5)
 
 
