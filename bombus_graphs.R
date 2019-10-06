@@ -25,6 +25,8 @@ save_plot <- function(save_name = "plot.png",
 # Use these for labeling factors so that the
 # axis labels and legends have proper scientific names.
 
+default_font <- "Linux Libertine O" # Plats get same font as text.
+
 bombus_species_alphabetical <- c("B. appositus", 
                                 "B. bifarius", 
                                 "B. frigidus", 
@@ -254,7 +256,115 @@ save_plot(save_name = save_file,
           height = 7)
 
 
-# Transect altitude plots -------------------------------------------------
+
+
+# Gothic Transect altitude plots ------------------------------------------
+#
+# Plot relative abundance of each species within a proboscis length
+# class along the altitudinal transect.
+
+gothic <-  read_csv("gothic_transect.csv",
+                    skip = 1,
+                    col_names = c(
+                      "site_number",
+                      "appositus",
+                      "kirbiellus",
+                      "bifarius",
+                      "frigidus",
+                      "sylvicola"
+                    )) %>% 
+  gather(key = species, 
+         value = relative_abundance, 
+         appositus,
+         kirbiellus,
+         bifarius,
+         frigidus,
+         sylvicola)
+
+## Long proboscis group
+gothic_long <- gothic %>% 
+  filter(species == "appositus" |
+           species == "kirbiellus") %>% 
+  mutate(species = factor(species,
+                          levels = c("appositus", "kirbiellus"),
+                          labels = c("B. appositus", "B. kirbiellus"),
+                          ordered = TRUE))
+
+## Short proboscis group
+gothic_short <- gothic %>% 
+  filter(species != "appositus" &
+           species != "kirbiellus") %>% 
+  mutate(species = factor(species,
+                          levels = c("bifarius", "frigidus", "sylvicola"),
+                          labels = c("B. bifarius", "B. frigidus", "B. sylvicola"),
+                          ordered = TRUE))
+
+Alpha = 1 #0 for blank plot, 1 for full plot
+
+## Washington transect, long proboscis
+gl_plot <- gothic_long %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = relative_abundance,
+                lty = species),
+            alpha = Alpha) +
+  theme_bw() +
+  labs(x = NULL,
+       y = "Relative abundance",
+       title = "Long proboscis",
+       lty = NULL) +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
+        panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(text = element_text(family = "Linux Libertine O")) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 8,
+                                   face = "italic")) +
+  guides(lty = guide_legend(override.aes = list(alpha = 1))) +
+  scale_y_continuous(limits = c(0, 1),
+                     minor_breaks = seq(0, 1, 0.01), 
+                     breaks = seq(0, 1, 0.1),
+                     expand = c(0.01, 0.01)) +
+  scale_x_continuous(breaks = seq(1, 17, 1),
+                     expand = c(0.01, 0.01))
+
+## Washington transect, short proboscis
+gs_plot <- gothic_short %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = relative_abundance,
+                lty = species),
+            alpha = Alpha) +
+  theme_bw() +
+  labs(x = "Site number",
+       y = NULL,
+       title = "Short proboscis",
+       lty = NULL) +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
+        panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(text = element_text(family = "Linux Libertine O")) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 8, 
+                                   face = "italic")) +
+  guides(lty = guide_legend(override.aes = list(alpha = 1))) +
+  scale_y_continuous(limits = c(0, 1),
+                     minor_breaks = seq(0, 1, 0.01), 
+                     breaks = seq(0, 1, 0.1),
+                     expand = c(0.01, 0.01)) +
+  scale_x_continuous(breaks = seq(1, 17, 1),
+                     expand = c(0.01, 0.01))
+
+gothic_plot <- gl_plot + gs_plot + plot_layout(ncol = 1)
+
+save_file <- ifelse(Alpha == 0, 
+                    "gothic_relative_abundance_blank.png", # Alpha = 0
+                    "gothic_relative_abundance_key.png")   # Alpha = 1
+
+save_plot(save_name = save_file, 
+          plot_name = gothic_plot,
+          width = 4,
+          height = 7)
+
+# Washington / Schofield Transect altitude plots --------------------------
 #
 # Plot relative abundance of each species within a proboscis length
 # class along the altitudinal transects.
@@ -431,3 +541,50 @@ save_plot(save_name = save_file,
           height = 5)
 
 
+
+
+
+
+# Gothic elevation profile ------------------------------------------------
+#
+# Elevations from Fig. 3. Maximum values used when a range was given.
+
+elevations <- c(2873, # Site 1
+                2867, # Site 2
+                2885, # Site 3
+                2915, # Site 4
+                2924, # Site 5
+                2930, # Site 6
+                2939, # Site 7
+                2958, # Site 8
+                2961, # Site 9
+                2985, # Site 10
+                3000, # Site 11
+                3076, # Site 12
+                3145, # Site 13
+                3242, # Site 14
+                3333, # Site 15
+                3485, # Site 16
+                3697) # Site 17
+
+site_numbers <- seq(1, 17, 1)
+
+gothic_elevations <- tibble(site_number = site_numbers, elevation = elevations)
+
+gothic_plot <- gothic_elevations %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = elevations)) +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(1, 17, 2)) +
+  scale_y_continuous(limits = c(2800, 3700),
+                     breaks = seq(2800, 3700, 100)) +
+  theme(panel.grid = element_blank()) +
+  theme(text = element_text(family = default_font,
+                            size = 8)) +
+  labs(x = "Site",
+       y = "Elevation (m)")
+
+save_plot("gothic_transect.png", 
+          gothic_plot,
+          width = 3, height = 2.3)
