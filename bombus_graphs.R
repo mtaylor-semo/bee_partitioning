@@ -20,6 +20,7 @@ save_plot <- function(save_name = "plot.png",
 }
   
 
+
 # Shared constants --------------------------------------------------------
 
 # Use these for labeling factors so that the
@@ -39,10 +40,10 @@ bombus_species_size <- c("B. appositus",
                         "B. frigidus", 
                         "B. sylvicola")
 
+
 ###########################################################################
 ## Begin plots
 ##
-
 
 # Queen proboscis lengths -------------------------------------------------
 #
@@ -91,8 +92,9 @@ bombus_plot <-
   theme_bw() +
   scale_x_discrete(labels = bombus_species_alphabetical) +
   theme(axis.text.x = element_text(face = "italic")) +
-  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
-  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
+        panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(text = element_text(family = default_font)) +
   scale_y_continuous(limits = c(6,14),
                      minor_breaks = seq(6, 14, 0.1), 
                      breaks = seq(6,14,1),
@@ -110,8 +112,9 @@ example_plot <-
   labs(y = NULL,
        x = NULL) +
   theme_bw() +
-  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
-  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
+        panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(text = element_text(family = default_font)) +
   scale_y_continuous(limits = c(6,14),
                      minor_breaks = seq(6, 14, 0.1), 
                      breaks = seq(6,14,1),
@@ -129,6 +132,7 @@ save_plot(save_name = save_file,
           width = 6,
           height = 3)
 
+
 # Proboscis vs corolla length ---------------------------------------------
 #
 # Scatterplot of proboscis v corolla length.
@@ -136,7 +140,7 @@ save_plot(save_name = save_file,
 
 pc_length <- read_csv("proboscis_corolla_lengths.csv")
 
-Alpha = 0 #0 for blank plot, 1 for full plot
+Alpha = 1 #0 for blank plot, 1 for full plot
 
 proboscis_corolla_plot <- pc_length %>% 
   ggplot(aes(x = proboscis,
@@ -148,8 +152,9 @@ proboscis_corolla_plot <- pc_length %>%
   theme_bw() +
   labs(x = "Mean proboscis length (mm)",
        y = "Mean corolla length (mm)") +
-  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2)) +
-  theme(panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
+        panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
+  theme(text = element_text(family = default_font)) +
   scale_y_continuous(limits = c(3,15),
                      minor_breaks = seq(3, 15, 0.1), 
                      breaks = seq(3, 15, 1),
@@ -167,6 +172,7 @@ save_plot(save_name = save_file,
           plot_name = proboscis_corolla_plot,
           width = 6,
           height = 3)
+
 
 
 # Bombus flower visits ----------------------------------------------------
@@ -233,7 +239,7 @@ bee_sums <- bees %>%
                                  labels = bombus_species_size,
                                  ordered = TRUE))
 
-Alpha = 0 #0 for blank plot, 1 for full plot
+Alpha = 1 #0 for blank plot, 1 for full plot
 
 flower_visits <- 
   bee_sums %>% 
@@ -244,7 +250,8 @@ flower_visits <-
   theme_bw() +
   labs(x = "Corolla size group (mm, minimum)",
        y = "Total visits") +
-  theme(strip.text.y = element_text(face = "italic"))
+  theme(strip.text.y = element_text(face = "italic")) +
+  theme(text = element_text(family = default_font))
 
 save_file <- ifelse(Alpha == 0,
                     "flower_visits_blank.png", # Alpha = 0
@@ -254,6 +261,7 @@ save_plot(save_name = save_file,
           plot_name = flower_visits,
           width = 4,
           height = 7)
+
 
 
 
@@ -299,7 +307,7 @@ gothic_short <- gothic %>%
                           labels = c("B. bifarius", "B. frigidus", "B. sylvicola"),
                           ordered = TRUE))
 
-Alpha = 1 #0 for blank plot, 1 for full plot
+Alpha = 0 #0 for blank plot, 1 for full plot
 
 ## Washington transect, long proboscis
 gl_plot <- gothic_long %>% 
@@ -315,7 +323,7 @@ gl_plot <- gothic_long %>%
        lty = NULL) +
   theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
         panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
-  theme(text = element_text(family = "Linux Libertine O")) +
+  theme(text = element_text(family = default_font)) +
   theme(legend.position = "bottom",
         legend.text = element_text(size = 8,
                                    face = "italic")) +
@@ -341,7 +349,7 @@ gs_plot <- gothic_short %>%
        lty = NULL) +
   theme(panel.grid.minor.y = element_line(color = "gray90", size = 0.2),
         panel.grid.major.y = element_line(color = "gray75", size = 0.2)) +
-  theme(text = element_text(family = "Linux Libertine O")) +
+  theme(text = element_text(family = default_font)) +
   theme(legend.position = "bottom",
         legend.text = element_text(size = 8, 
                                    face = "italic")) +
@@ -364,6 +372,55 @@ save_plot(save_name = save_file,
           width = 4,
           height = 7)
 
+
+# Gothic elevation profile ------------------------------------------------
+#
+# Elevations from Fig. 3. Maximum values used when a range was given.
+
+elevations <- c(2873, # Site 1
+                2867, # Site 2
+                2885, # Site 3
+                2915, # Site 4
+                2924, # Site 5
+                2930, # Site 6
+                2939, # Site 7
+                2958, # Site 8
+                2961, # Site 9
+                2985, # Site 10
+                3000, # Site 11
+                3076, # Site 12
+                3145, # Site 13
+                3242, # Site 14
+                3333, # Site 15
+                3485, # Site 16
+                3697) # Site 17
+
+site_numbers <- seq(1, 17, 1)
+
+gothic_elevations <- tibble(site_number = site_numbers, elevation = elevations)
+
+gothic_plot <- gothic_elevations %>% 
+  ggplot() +
+  geom_line(aes(x = site_number,
+                y = elevations)) +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(1, 17, 2)) +
+  scale_y_continuous(limits = c(2800, 3700),
+                     breaks = seq(2800, 3700, 100)) +
+  theme(panel.grid = element_blank()) +
+  theme(text = element_text(family = default_font,
+                            size = 8)) +
+  labs(x = "Site",
+       y = "Elevation (m)")
+
+save_plot("gothic_transect.png", 
+          gothic_plot,
+          width = 3, height = 2.3)
+
+
+##
+## Not used for now.
+##
 # Washington / Schofield Transect altitude plots --------------------------
 #
 # Plot relative abundance of each species within a proboscis length
@@ -545,46 +602,3 @@ save_plot(save_name = save_file,
 
 
 
-# Gothic elevation profile ------------------------------------------------
-#
-# Elevations from Fig. 3. Maximum values used when a range was given.
-
-elevations <- c(2873, # Site 1
-                2867, # Site 2
-                2885, # Site 3
-                2915, # Site 4
-                2924, # Site 5
-                2930, # Site 6
-                2939, # Site 7
-                2958, # Site 8
-                2961, # Site 9
-                2985, # Site 10
-                3000, # Site 11
-                3076, # Site 12
-                3145, # Site 13
-                3242, # Site 14
-                3333, # Site 15
-                3485, # Site 16
-                3697) # Site 17
-
-site_numbers <- seq(1, 17, 1)
-
-gothic_elevations <- tibble(site_number = site_numbers, elevation = elevations)
-
-gothic_plot <- gothic_elevations %>% 
-  ggplot() +
-  geom_line(aes(x = site_number,
-                y = elevations)) +
-  theme_minimal() +
-  scale_x_continuous(breaks = seq(1, 17, 2)) +
-  scale_y_continuous(limits = c(2800, 3700),
-                     breaks = seq(2800, 3700, 100)) +
-  theme(panel.grid = element_blank()) +
-  theme(text = element_text(family = default_font,
-                            size = 8)) +
-  labs(x = "Site",
-       y = "Elevation (m)")
-
-save_plot("gothic_transect.png", 
-          gothic_plot,
-          width = 3, height = 2.3)
