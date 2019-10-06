@@ -151,7 +151,7 @@ sighted along two of the transects.
 
 Download bombus\_data.xlsx\footnote{All data currently in one
 spreadsheet.} and click on the “Proboscis Lengths” tab. These data are
- proboscis lengths from 50 individuals for each of five \textit{Bombus} species. All measurements are in millimeters (mm).\footnote{Data simulated 
+ proboscis lengths measured from 50 individuals for each of five \textit{Bombus} species. All measurements are in millimeters (mm).\footnote{Data simulated 
 from results of Macior (1974).}
 
 Use the \texttt{average} function in Excel to calculate the mean $\left(\meanY\right)$ proboscis length for each species. Use the \texttt{stdev.s} function
@@ -268,9 +268,9 @@ Write a prediction based on your hypothesis.
 
 \subsubsection*{Analysis: proboscis length and corolla length}\label{sec:proboscis_flower_length}
 
-\textbf{Inc. pic of flower corolla? Or put in pre-lab?}
+\textbf{Inc. pics of bee proboscis and flower corolla in pre-lab}
 
-Pyke et al.~(2012) measured the corolla lengths for all species of flowers visited by different species and castes (queens, workers, and males) of \textit{Bombus.} You will find the average corolla and proboscis lengths recorded in the “Proboscis and Corolla Lengths” tab. 
+Pyke et al.~(2012) measured the corolla lengths for all species of flowers visited by different species and castes (queens, workers, and males) of \textit{Bombus.} You will find the average corolla and proboscis lengths recorded in the “Proboscis and corolla lengths” tab. 
 
 \question
 Make a scatterplot of the data with proboscis length on the x-axis and corolla length on the y-axis.
@@ -280,6 +280,8 @@ Make a scatterplot of the data with proboscis length on the x-axis and corolla l
 \else
 	\includegraphics[width=\textwidth]{proboscis_corolla_blank}
 \fi
+
+\textbf{Consider shiny app to do linear regression?}
 
 \question
 Do the results agree with your prediction? Explain.
@@ -368,36 +370,152 @@ bees with similar proboscis lengths use similar size flowers.}
 
 \subsubsection*{Analysis: altitude and relative abundance}
 
-Pyke's (1982) study took place in the Rocky Mountains. His transects
-included multiple sites at elevations between 2,939–3758~m (9,642–12,329~ft) 
-above sea level. 
+Pyke (1982) noticed that the relative abundance of bees with long 
+and short proboscises seemed to change as elevation increased. To 
+verify his observations, Pyke calculated the relative abundance
+of each species by dividing the number of individuals of
+one species by the total number of individuals of all species in
+the \emph{same} size class. For example, the relative abundance
+of \textit{B. appositus} among long-proboscis bees was calculated by
 
+\begin{equation*}
+\dfrac{\mathrm{Number~of}~appositus}{\mathrm{Number~of}~appositus + 
+\mathrm{Number~of}~kirbiellus}
+\end{equation*}
 
-\begin{tabular}{@{}R{0.4in}R{1in}R{0.4in}R{1in}@{}}
+The Gothic Transect tab has the relative abundance of the five 
+\textit{Bombus} species for that transect. The Gothic Transect 
+had 17 sites at elevations between 
+2,873–3,697~m (9,426–12,129~ft) above sea level. Notice the
+distinct change in gradient starting at site 11.
+
+\begin{multicols}{2}
+
+\begin{tabular}{@{}R{0.25in}R{0.9in}R{0.25in}R{0.9in}@{}}
 	\toprule
-	\multicolumn{2}{c}{Washington Gulch} & \multicolumn{2}{c}{Schofield} \tabularnewline
-	\cmidrule(r){1-2} \cmidrule(l){3-4} 
-	Site	& Elevation (m) & Site	& Elevation (m) \tabularnewline
+	Site	& Elevation (m)	&	Site	&	Elevation (m) \tabularnewline
 	\midrule
-	1 & 2,939–3,091 	& 1	& 3,176 \tabularnewline
-	2 & 3,091–3,182 	& 2	& 3,206 \tabularnewline
-	3 & 3,182–3,242 	& 3	& 3,212–3,333 \tabularnewline
-	4 & 3,242 			& 4	& 3,333–3,485 \tabularnewline
-	5 & 3,242–3,333 	& 5	& 3,485–3,636 \tabularnewline
-	6 & 3,333 			& 6	& 3,636–3,758 \tabularnewline
-	7 & 3,333–3,394 	& 	&  \tabularnewline
-	8 & 3,394–3,442 	& 	&  \tabularnewline
+	1 & 2,873		& 10	& 2,985 \tabularnewline
+	2 & 2,867		& 11	& 3,000 \tabularnewline
+	3 & 2,885 		& 12	& 3,076 \tabularnewline
+	4 & 2,915		& 13	& 3,145 \tabularnewline
+	5 & 2,924		& 14	& 3,152–3,242 \tabularnewline
+	6 & 2,930		& 15	& 3,242–3,333 \tabularnewline
+	7 & 2,939 		& 16	& 3,333–3,485 \tabularnewline
+	8 & 2,958	 	& 17	& 3,485–3,697 \tabularnewline
+	9 &	2,961		&		&	\tabularnewline
 	\bottomrule
 \end{tabular}
 
+\columnbreak
+
+\includegraphics[width=\linewidth]{gothic_transect}
+
+\end{multicols}
+
+%\begin{tabular}{@{}R{0.4in}R{1in}R{0.4in}R{1in}@{}}
+%	\toprule
+%	\multicolumn{2}{c}{Washington Gulch} & \multicolumn{2}{c}{Schofield} \tabularnewline
+%	\cmidrule(r){1-2} \cmidrule(l){3-4} 
+%	Site	& Elevation (m) & Site	& Elevation (m) \tabularnewline
+%	\midrule
+%	1 & 2,939–3,091 	& 1	& 3,176 \tabularnewline
+%	2 & 3,091–3,182 	& 2	& 3,206 \tabularnewline
+%	3 & 3,182–3,242 	& 3	& 3,212–3,333 \tabularnewline
+%	4 & 3,242 			& 4	& 3,333–3,485 \tabularnewline
+%	5 & 3,242–3,333 	& 5	& 3,485–3,636 \tabularnewline
+%	6 & 3,333 			& 6	& 3,636–3,758 \tabularnewline
+%	7 & 3,333–3,394 	& 	&  \tabularnewline
+%	8 & 3,394–3,442 	& 	&  \tabularnewline
+%	\bottomrule
+%\end{tabular}
+%
 \bigskip
 
+\question
+Calculate the elevation change between Site~1 and Site~11.
+
+\AnswerBox{\baselineskip}{127~m.}
+
+\question
+Calculate the elevation change between Site~12 and Site~17 (use the 
+heighest elevation for Site~17).
+
+\AnswerBox{\baselineskip}{621~m.}
 
 
+
+\question
+Plot a line graph of the relative abundance of the two long-proboscis \textit{Bombus} species at each site of the Gothic Transect in the left panel of the blank graph on page~\pageref{fig:relative_abundance}. 
+
+To make the line graph, make a dot above each site number
+for the relative abundance of a species. Then connect the dots with a line. Use a solid line for \textit{B.~appositus} and a dashed 
+line for \textit{B.~kirbiellus.}
+
+\question
+Plot a line graph of the relative abundance of the three 
+short-proboscis \textit{Bombus} species at each site of the Gothic 
+transect in the lower left panel of the blank graph on 
+page~\pageref{fig:relative_abundance}. Use a solid line for 
+\textit{B.~bifarius}, a short-dashed line for \textit{B.~frigidus,} 
+and a long-dashed line for \textit{B.~sylvicola.}
+
+%\makebox[\textwidth][c]{
+\label{fig:relative_abundance}
+\ifprintanswers
+	\includegraphics[height=\textheight]{gothic_relative_abundance_key}
+\else
+	\includegraphics[height =\textheight]{gothic_relative_abundance_blank}
+\fi
+%}
+
+\question
+Describe how the relative abundances of \textit{B.~appositus} and 
+\textit{B.~kirbiellus} change along the Gothic transect from
+lower (Site~1) to higher (Site~17) elevations? At which site(s)
+and elevations does one species start to become more abundant
+than the other?
+
+\AnswerBox{3\baselineskip}{\textit{B.~appositus} starts very 
+high rel.~abund.~but decreases sharply between starting at
+site~11. \textit{B. kirbiellus} shows the opposite pattern.}
+
+\question
+Describe how the relative abundances of \textit{B.~bifarius},
+\textit{B.~frigidus}, and \textit{B.~sylvicola} change along 
+the Gothic transect from lower (Site~1) to higher (Site~17) elevations? At what elevations is \textit{B.~bifarius} the
+most abundant species? At what elevations is \textit{B.~frigidus} 
+the most abundant species? At what elevations is \textit{B.~sylvicola} 
+the most abundant species?
+
+\AnswerBox{4\baselineskip}{\textit{B.~bifarius} is most abundant
+at the lower elevation sites but is no longer the most abundant 
+species by site 9–10. \textit{B.~frigidus} the most abundant species
+between sites 9-11. \textit{B.~sylvicola} becomes most abundant 
+between sites 12–13.}
+
+
+\question
+Write a statement that describes how \textit{Bombus} species with
+proboscises of similar lengths partition elevation.
+
+\AnswerBox{2\baselineskip}{Species with similar-sized proboscises
+tend to occur at different elevations.}
 
 \question[Checkout]
-Describe the evidence you now have and how it supports resource partitioning among the five species of \textit{Bombus} bumble bees studied here.
+Describe the evidence you now have and how it supports resource partitioning of flower size and elevation among the five species of \textit{Bombus} bumble bees studied here.
 
+\begin{AnswerPage}{0.2\textheight}
+The five species of \textit{Bombus} bumble bees partition their
+nectar sources based on the length of their proboscises. Species
+with shorter proboscises visit smaller flowers more often and 
+vice versa for species with long proboscises.
+
+Species with similar lengths of proboscises tend to partition
+elevation. At with one species usually dominant at a similar 
+elevations. As elevation increases, another species tends to become
+more abundant.
+\end{AnswerPage}
 
 \end{questions}
 
