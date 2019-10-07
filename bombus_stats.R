@@ -24,7 +24,7 @@ proboscis_tukey <- TukeyHSD(proboscis_aov)
 # Linear regression of proboscis and corolla lengths ----------------------
 #
 
-pc_length <- read_csv("data/proboscis_corolla_lengths.csv")
+pc_length <- read_csv("data/µproboscis_corolla_lengths.csv")
 
 pc_model <- lm(corolla ~ proboscis, data = pc_length)
 pc_aov <- aov(pc_model)
