@@ -6,7 +6,7 @@
 library(tidyverse)
 library(ggthemes)
 
-prob_raw <- read_csv("proboscis_corolla_lengths.csv")
+prob_raw <- read_csv("data/proboscis_corolla_lengths.csv")
 prob_raw %>% 
   ggplot(aes(x = proboscis,
              y = corolla)) +
