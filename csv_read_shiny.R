@@ -19,7 +19,8 @@ if (interactive()) {
         checkboxInput("header", "Header", TRUE)
       ),
       mainPanel(
-        tableOutput("contents")
+        #tableOutput("contents")
+        tableOutput("model")
       )
     )
   )
@@ -57,7 +58,9 @@ if (interactive()) {
         checkboxInput("header", "Header", TRUE)
       ),
       mainPanel(
-        tableOutput("contents")
+        #tableOutput("contents"),
+        
+        tableOutput("model")
       )
     )
   )
@@ -74,8 +77,13 @@ if (interactive()) {
       if (is.null(inFile))
         return(NULL)
       
-      read.csv(inFile$datapath, header = input$header)
+      dat <- read.csv(inFile$datapath, header = input$header)
+      
     })
+    
+    output$model <- renderPrint({
+      fit <- lm(corolla~proboscis, data = dat)
+      summary(fit)})
   }
   
   shinyApp(ui, server)
