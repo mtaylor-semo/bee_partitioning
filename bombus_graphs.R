@@ -52,7 +52,7 @@ bombus_species_size <- c("B. appositus",
 # be practical for graphing.
 
 ## Read in data to plot
-bombus <- read_csv("proboscis_lengths.csv") %>% 
+bombus <- read_csv("data/proboscis_lengths.csv") %>% 
   gather(key = species, 
          value = length)
 
@@ -138,7 +138,7 @@ save_plot(save_name = save_file,
 # Scatterplot of proboscis v corolla length.
 
 
-pc_length <- read_csv("proboscis_corolla_lengths.csv")
+pc_length <- read_csv("data/proboscis_corolla_lengths.csv")
 
 Alpha = 1 #0 for blank plot, 1 for full plot
 
@@ -180,7 +180,7 @@ save_plot(save_name = save_file,
 # Make column charts of number of visits by each species to 
 # each size class of corollas. 
 
-bees_raw <- read_csv("bombus_flower_visits.csv", 
+bees_raw <- read_csv("data/bombus_flower_visits.csv", 
                      skip = 2,
                      col_names = c(
                        "plant_species",
@@ -271,7 +271,7 @@ save_plot(save_name = save_file,
 # Plot relative abundance of each species within a proboscis length
 # class along the altitudinal transect.
 
-gothic <-  read_csv("gothic_transect.csv",
+gothic <-  read_csv("data/gothic_transect.csv",
                     skip = 1,
                     col_names = c(
                       "site_number",
@@ -426,7 +426,7 @@ save_plot("gothic_transect.png",
 # Plot relative abundance of each species within a proboscis length
 # class along the altitudinal transects.
 
-wash_tran <- read_csv("washington_transect.csv",
+wash_tran <- read_csv("data/washington_transect.csv",
                       skip = 1,
                       col_names = c(
                         "site_number",
@@ -444,7 +444,7 @@ wash_tran <- read_csv("washington_transect.csv",
          frigidus,
          sylvicola)
 
-scho_tran <- read_csv("schofield_transect.csv",
+scho_tran <- read_csv("data/schofield_transect.csv",
                       skip = 1,
                       col_names = c(
                         "site_number",
