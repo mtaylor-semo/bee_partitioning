@@ -77,13 +77,9 @@ if (interactive()) {
       if (is.null(inFile))
         return(NULL)
       
-      dat <- read.csv(inFile$datapath, header = input$header)
+      read.csv(inFile$datapath, header = input$header)
       
     })
-    
-    output$model <- renderPrint({
-      fit <- lm(corolla~proboscis, data = dat)
-      summary(fit)})
   }
   
   shinyApp(ui, server)
