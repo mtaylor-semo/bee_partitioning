@@ -2,10 +2,9 @@
 ## https://shiny.rstudio.com/reference/shiny/0.14/fileInput.html
 
 library(shiny)
+#library(ggplot)
 
 ## Only run examples in interactive R sessions
-if (interactive()) {
-  
   ui <- fluidPage(
     titlePanel("Bumble bee partitioning"),
     sidebarLayout(
@@ -52,4 +51,3 @@ if (interactive()) {
   }
   
   shinyApp(ui, server)
-}
