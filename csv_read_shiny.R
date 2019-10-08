@@ -7,6 +7,7 @@ library(shiny)
 if (interactive()) {
   
   ui <- fluidPage(
+    titlePanel("Bumble bee partitioning"),
     sidebarLayout(
       sidebarPanel(
         fileInput("file1", "Choose CSV File",
@@ -16,49 +17,11 @@ if (interactive()) {
                     ".csv")
         ),
         tags$hr(),
-        checkboxInput("header", "Header", TRUE)
+        checkboxInput("header", "Header", TRUE),
+        uiOutput("columns_menu")
       ),
       mainPanel(
-        #tableOutput("contents")
-        tableOutput("model")
-      )
-    )
-  )
-  
-  server <- function(input, output) {
-    output$contents <- renderTable({
-      # input$file1 will be NULL initially. After the user selects
-      # and uploads a file, it will be a data frame with 'name',
-      # 'size', 'type', and 'datapath' columns. The 'datapath'
-      # column will contain the local filenames where the data can
-      # be found.
-      inFile <- input$file1
-      
-      if (is.null(inFile))
-        return(NULL)
-      
-      read.csv(inFile$datapath, header = input$header)
-    })
-  }
-  
-  shinyApp(ui, server)
-}## Only run examples in interactive R sessions
-if (interactive()) {
-  
-  ui <- fluidPage(
-    sidebarLayout(
-      sidebarPanel(
-        fileInput("file1", "Choose CSV File",
-                  accept = c(
-                    "text/csv",
-                    "text/comma-separated-values,text/plain",
-                    ".csv")
-        ),
-        tags$hr(),
-        checkboxInput("header", "Header", TRUE)
-      ),
-      mainPanel(
-        #tableOutput("contents"),
+        tableOutput("contents"),
         
         tableOutput("model")
       )
@@ -66,20 +29,26 @@ if (interactive()) {
   )
   
   server <- function(input, output) {
-    output$contents <- renderTable({
-      # input$file1 will be NULL initially. After the user selects
-      # and uploads a file, it will be a data frame with 'name',
-      # 'size', 'type', and 'datapath' columns. The 'datapath'
-      # column will contain the local filenames where the data can
-      # be found.
-      inFile <- input$file1
-      
-      if (is.null(inFile))
-        return(NULL)
-      
-      read.csv(inFile$datapath, header = input$header)
-      
+    df = reactive({
+      req(input$file1)
+      read.csv(file = input$file1$datapath)
     })
+    
+    # Get column names for UI menu.
+    output$columns_menu <- renderUI({
+      selectInput("cols", "Column Names", names(df()))
+    })
+    
+    output$contents <- renderTable({
+      df()
+    })
+    
+    output$model <- renderTable({
+      req(df())
+      bee_lm <- lm(corolla ~ proboscis, data = df())
+      return(data.frame(summary(bee_lm)$coefficient))
+    },
+    rownames = TRUE)
   }
   
   shinyApp(ui, server)
