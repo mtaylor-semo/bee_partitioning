@@ -5,8 +5,9 @@ library(shiny)
 #library(ggplot)
 
 ## Only run examples in interactive R sessions
-  ui <- fluidPage(
-    titlePanel("Bumble bee partitioning"),
+  ui <- navbarPage(
+    "Bumble bee partitioning",
+    tabPanel("Upload file",
     sidebarLayout(
       sidebarPanel(
         fileInput("file1", "Choose CSV File",
@@ -16,16 +17,43 @@ library(shiny)
                     ".csv")
         ),
         tags$hr(),
-        checkboxInput("header", "Header", TRUE),
-        uiOutput("columns_menu")
+        checkboxInput("header", "Header", TRUE)
       ),
       mainPanel(
-        tableOutput("contents"),
+        tableOutput("contents")
         
-        tableOutput("model")
+        #tableOutput("model")
+      )
+    )
+  ),  # end tabPanel Upload
+  tabPanel(
+    "ANOVA",
+    sidebarLayout(
+      sidebarPanel(
+        helpText("ANOVA goes here"),
+        uiOutput("anova_columns_menu")
+      ),
+      mainPanel(
+        helpText("ANOVA goes here"),
+        tableOutput("anova")
+      )
+    )
+  ),
+  tabPanel(
+    "Linear Regression",
+    sidebarLayout(
+      sidebarPanel(
+        helpText("Linear Regression goes here"),
+        uiOutput(("lm_columns_menu"))
+      ),
+      mainPanel(
+        tableOutput("lm")
       )
     )
   )
+  
+  
+  )# End navbarPage
   
   server <- function(input, output) {
     df = reactive({
@@ -34,7 +62,11 @@ library(shiny)
     })
     
     # Get column names for UI menu.
-    output$columns_menu <- renderUI({
+    output$anova_columns_menu <- renderUI({
+      selectInput("cols", "Column Names", names(df()))
+    })
+
+    output$lm_columns_menu <- renderUI({
       selectInput("cols", "Column Names", names(df()))
     })
     
@@ -42,10 +74,23 @@ library(shiny)
       df()
     })
     
-    output$model <- renderTable({
+    output$lm <- renderTable({
       req(df())
       bee_lm <- lm(corolla ~ proboscis, data = df())
-      return(data.frame(summary(bee_lm)$coefficient))
+      return(
+        data.frame(
+          summary(bee_lm)$coefficient)
+      )
+    },
+    rownames = TRUE)
+    
+    output$anova <- renderTable({
+      req(df())
+      bee_lma <- lm(corolla ~ proboscis, data = df())
+      bee_anova <- aov(bee_lma)
+      return(
+        data.frame(
+          summary(bee_anova)[[1]]))
     },
     rownames = TRUE)
   }
