@@ -7,113 +7,140 @@ library(broom)
 
 #library(ggplot)
 
-## Only run examples in interactive R sessions
-  ui <- navbarPage(
-    "Bumble bee partitioning",
-    tabPanel("Upload file",
-    sidebarLayout(
-      sidebarPanel(
-        fileInput("file1", "Choose CSV File",
-                  accept = c(
-                    "text/csv",
-                    "text/comma-separated-values,text/plain",
-                    ".csv")
-        ),
-        tags$hr(),
-        checkboxInput("header", "Header", TRUE)
-      ),
-      mainPanel(
-        tableOutput("contents")
-        
-        #tableOutput("model")
-      )
-    )
-  ),  # end tabPanel Upload
+ui <- navbarPage(
+  "Bumble bee partitioning",
+  tabPanel("Instructions",
+           mainPanel(
+             p(
+               "Use this site to help you analyze the bumble bee data for resource partitioning."
+             ),
+             
+             p(
+               "Choose the Histogram and ANOVA tab to visualize and statistically analyze
+               the proboscis lengths for the five species of Bombus."
+             ),
+             
+             p(
+               "Choose the Linear Regression tab to perform a regression analysis of
+               corolla length on proboscis length."
+             )
+             )),
   tabPanel(
-    "ANOVA",
+    "Linear Regression Tab",
     sidebarLayout(
       sidebarPanel(
-        helpText("ANOVA goes here"),
-        uiOutput("anova_columns_menu")
+        p(
+          "This is an application exploring the correlation analysis. Upload some data and inspect your correlation. Your file must be in csv format to upload."
+        ),
+        
+        fileInput(
+          inputId = "datafile",
+          label = "Upload a data file",
+          multiple = FALSE,
+          placeholder = "No file selected",
+          accept = "csv"
+        ),
+        
+        selectInput(
+          inputId = "var1",
+          label = "Predictor variable (x-axis)",
+          choices = ""
+        ),
+        selectInput(
+          inputId = "var2",
+          label = "Response variable (y-axis)",
+          choices = ""
+        ),
+        
+        p(strong("Plot")),
+        checkboxInput(
+          inputId = "regressionLine",
+          label = "Show regression line",
+          value = TRUE
+        ),
+
+        p(strong("Table")),
+        checkboxInput(
+          inputId = "conf.int",
+          label = "Display confidence interval",
+          value = FALSE
+        ),
+        
+        actionButton(inputId = "update", label = "Update")
       ),
       mainPanel(
-        helpText("ANOVA goes here"),
-        tableOutput("anova")
+        h3("Result"),
+        plotOutput(outputId = "plot"),
+        tableOutput(outputId = "table")
       )
     )
   ),
-  tabPanel(
-    "Linear Regression",
-    sidebarLayout(
-      sidebarPanel(
-        helpText("Linear Regression goes here"),
-        uiOutput(("lm_columns_menu"))
-      ),
-      mainPanel(
-        tableOutput("lm"),
-        plotOutput("regression_plot")
-      )
-    )
-  )
+  # end tabPanel Upload
+  tabPanel("ANOVA",
+           sidebarLayout(
+             sidebarPanel(helpText("ANOVA goes here"),
+                          uiOutput("anova_columns_menu")),
+             mainPanel(helpText("ANOVA goes here"),
+                       tableOutput("anova"))
+           ))
   
   
   )# End navbarPage
   
-  server <- function(input, output) {
-    df = reactive({
-      req(input$file1)
-      read.csv(file = input$file1$datapath)
+  server <- function(input, output, session) {
+    contentsrea <- reactive({
+      inFile <- input$datafile
+      if (is.null(inFile))
+        return(NULL)
+      read.csv(inFile$datapath)
+    })
+    observe({
+      updateSelectInput(session, "var1", choices = names(contentsrea()))
+      updateSelectInput(session, "var2", choices = names(contentsrea())[2])
     })
     
-    # Get column names for UI menu.
-    output$anova_columns_menu <- renderUI({
-      selectInput("cols", "Column Names", names(df()))
-    })
-
-    output$lm_columns_menu <- renderUI({
-      selectInput("cols", "Column Names", names(df()))
-    })
-    
-    output$contents <- renderTable({
-      df()
-    })
-    
-    output$lm <- renderTable({
-      req(df())
-      bee_lm <- lm(corolla ~ proboscis, data = df())
-      return(
-        data.frame(
-          summary(bee_lm)$coefficient)
-      )
-    },
-    rownames = TRUE)
-    
-    output$regression_plot <- renderPlot({
-      
-      model <- summary(lm(corolla ~ proboscis, data = df())) %>% glance()
-      r2 <- round(model$r.squared, 2)
-      
-      cor_r <- round(cor(df()$corolla, df()$proboscis), 2)
-      
-      p1 <- ggplot(data = df(), aes(x = proboscis, y = corolla)) + 
-        geom_point() +
-        labs(title = paste("R^2 =", r2,". Correlation =", cor_r),
-             x = "Proboscis Length (mm)",
-             y = "Corolla Length (mm)") +
-        geom_smooth(method = "lm",  se = FALSE)
-      print(p1)
+    observeEvent(input$update, {
+      if(!is.null(input$datafile)){
+        
+        df <- read.csv(input$datafile$datapath, header = TRUE, sep = ",")
+        var1 <- df[, which(colnames(df) == input$var1)]
+        var2 <- df[, which(colnames(df) == input$var2)]
+        dat <- data.frame(var1 = var1, var2 = var2)
+        corResult <- cor.test(x = var1, y = var2)
+        
+        # Table
+        df <- data.frame("Predictor" = input$var1, 
+                         "Response" = input$var2, "Correlation" = corResult$estimate, "p-value" = corResult$p.value, check.names = FALSE)
+        if(input$conf.int){
+          lowerCI <- corResult$conf.int[1]
+          upperCI <- corResult$conf.int[2]
+          df <- cbind(df, lowerCI, upperCI)
+        }
+        rownames(df) <- "Correlation Result"
+        output$table <- renderTable(df, rownames = TRUE)
+        
+        # Plot
+        fit <- lm(var2 ~ var1, data = dat)
+        dat$predicted <- predict(fit)
+        ggObj <- ggplot(data = dat, aes(x = var1, y = var2)) +
+          geom_point(color='gray60', size = 3) +
+          xlab(paste(input$var1, "(mm)")) +
+          ylab(paste(input$var2, "(mm)")) +
+          theme_bw() +
+          theme(axis.title = element_text(size = 17),
+                axis.text = element_text(size = 17))
+        
+        if(input$regressionLine){
+          ggObj <- ggObj + 
+            geom_smooth(method = "lm",
+                        se = FALSE, 
+                        color = "darkred", 
+                        size = 1.5)
+        }
+        
+        output$plot <- renderPlot(ggObj)
       }
-    )
-    
-    output$anova <- renderTable({
-      req(df())
-      bee_lma <- lm(corolla ~ proboscis, data = df())
-      bee_anova <- aov(bee_lma)
-      return(
-        data.frame(
-          summary(bee_anova)[[1]]))
-    },
-    rownames = TRUE)
+    })
   }
-  
-  shinyApp(ui, server)
+
+shinyApp(ui, server)
