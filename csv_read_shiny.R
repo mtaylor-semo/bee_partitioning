@@ -2,6 +2,9 @@
 ## https://shiny.rstudio.com/reference/shiny/0.14/fileInput.html
 
 library(shiny)
+library(tidyverse)
+library(broom)
+
 #library(ggplot)
 
 ## Only run examples in interactive R sessions
@@ -47,7 +50,8 @@ library(shiny)
         uiOutput(("lm_columns_menu"))
       ),
       mainPanel(
-        tableOutput("lm")
+        tableOutput("lm"),
+        plotOutput("regression_plot")
       )
     )
   )
@@ -83,6 +87,23 @@ library(shiny)
       )
     },
     rownames = TRUE)
+    
+    output$regression_plot <- renderPlot({
+      
+      model <- summary(lm(corolla ~ proboscis, data = df())) %>% glance()
+      r2 <- round(model$r.squared, 2)
+      
+      cor_r <- round(cor(df()$corolla, df()$proboscis), 2)
+      
+      p1 <- ggplot(data = df(), aes(x = proboscis, y = corolla)) + 
+        geom_point() +
+        labs(title = paste("R^2 =", r2,". Correlation =", cor_r),
+             x = "Proboscis Length (mm)",
+             y = "Corolla Length (mm)") +
+        geom_smooth(method = "lm",  se = FALSE)
+      print(p1)
+      }
+    )
     
     output$anova <- renderTable({
       req(df())
