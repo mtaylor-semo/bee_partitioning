@@ -30,7 +30,8 @@ ui <- navbarPage(
     sidebarLayout(
       sidebarPanel(
         p(
-          "This is an application exploring the correlation analysis. Upload some data and inspect your correlation. Your file must be in csv format to upload."
+          "Upload the csv file with the proboscis and corolla length data.
+          Your file must be in csv format to upload."
         ),
         
         fileInput(
@@ -69,8 +70,9 @@ ui <- navbarPage(
         actionButton(inputId = "update", label = "Update")
       ),
       mainPanel(
-        h3("Result"),
         plotOutput(outputId = "plot"),
+        tags$hr(),
+        h4("Analysis summary"),
         tableOutput(outputId = "table")
       )
     )
@@ -95,8 +97,14 @@ ui <- navbarPage(
       read.csv(inFile$datapath)
     })
     observe({
-      updateSelectInput(session, "var1", choices = names(contentsrea()))
-      updateSelectInput(session, "var2", choices = names(contentsrea())[2])
+      updateSelectInput(session, 
+                        "var1", 
+                        choices = names(contentsrea()),
+                        selected = names(contentsrea()[1]))
+      updateSelectInput(session, 
+                        "var2", 
+                        choices = names(contentsrea()),
+                        selected = names(contentsrea()[2]))
     })
     
     observeEvent(input$update, {
@@ -108,24 +116,36 @@ ui <- navbarPage(
         dat <- data.frame(var1 = var1, var2 = var2)
         corResult <- cor.test(x = var1, y = var2)
         
-        # Table
-        df <- data.frame("Predictor" = input$var1, 
-                         "Response" = input$var2, "Correlation" = corResult$estimate, "p-value" = corResult$p.value, check.names = FALSE)
-        if(input$conf.int){
-          lowerCI <- corResult$conf.int[1]
-          upperCI <- corResult$conf.int[2]
-          df <- cbind(df, lowerCI, upperCI)
+        bee_lm <- lm(var2 ~ var1, data = dat)
+        bee_sum <- summary(bee_lm)
+        
+        r2 <- round(bee_sum$r.squared, 2)
+        intercept <- round(bee_sum$coefficients[[1]], 2)
+        slope <- round(bee_sum$coefficients[[2]], 2)
+        if (intercept >= 0) {
+          sign <- " + "} else {
+            sign <-  " - "
+            intercept <-abs(intercept)
         }
-        rownames(df) <- "Correlation Result"
-        output$table <- renderTable(df, rownames = TRUE)
+        
+        regression_formula = paste0("Y = ", slope, "X", sign, intercept)
+        
+        # Table
+        summary_df <- data.frame(bee_sum$coefficients)
+        
+        rownames(summary_df) <- c("Intercept", "Proboscis length")
+        colnames(summary_df) <- c("Estimate", "Std. Error", "t Value", "Probability")
+        output$table <- renderTable(summary_df, rownames = TRUE)
         
         # Plot
         fit <- lm(var2 ~ var1, data = dat)
         dat$predicted <- predict(fit)
         ggObj <- ggplot(data = dat, aes(x = var1, y = var2)) +
           geom_point(color='gray60', size = 3) +
-          xlab(paste(input$var1, "(mm)")) +
-          ylab(paste(input$var2, "(mm)")) +
+          labs(x = paste(input$var1, "(mm)"),
+               y = paste(input$var2, "(mm)"),
+               title = bquote(.(regression_formula) * ".   " ~ R^2 ~ " = " ~ .(r2))) +
+#               title = paste(regression_formula, ".", r_two, "= ", r2, ".")) +
           theme_bw() +
           theme(axis.title = element_text(size = 17),
                 axis.text = element_text(size = 17))
