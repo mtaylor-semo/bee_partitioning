@@ -5,28 +5,97 @@ library(shiny)
 library(tidyverse)
 library(broom)
 
-#library(ggplot)
+# Globals -----------------------------------------------------------------
 
+bombus_species_alphabetical <- c("B. appositus", 
+                                 "B. bifarius", 
+                                 "B. frigidus", 
+                                 "B. kirbiellus", 
+                                 "B. sylvicola")
 ui <- navbarPage(
   "Bumble bee partitioning",
+
+# Instruction tab ---------------------------------------------------------
+
   tabPanel("Instructions",
            mainPanel(
              p(
-               "Use this site to help you analyze the bumble bee data for resource partitioning."
+               "Use this site to help you analyze the",
+               em("Bombus"), "bumble bee data for resource 
+               partitioning."
              ),
              
              p(
-               "Choose the Histogram and ANOVA tab to visualize and statistically analyze
-               the proboscis lengths for the five species of Bombus."
+               "Choose the Histogram and ANOVA tab above to visualize and 
+              statistically analyze the proboscis lengths for the five 
+               species of", em("Bombus.")
              ),
              
              p(
-               "Choose the Linear Regression tab to perform a regression analysis of
+               "Choose the Linear Regression tab above to perform a regression analysis of
                corolla length on proboscis length."
              )
              )),
+
+# Histogram and ANOVA tab -------------------------------------------------
+
+  tabPanel("Histograms and ANOVA",
+           sidebarLayout(
+             sidebarPanel(
+               p(
+                 "Upload the csv file with the proboscis length data for the five",
+                 em("Bombus"), "species. Your file must be in csv format to upload."
+               ),
+               
+               fileInput(
+                 inputId = "anova_file",
+                 label = "Upload a data file",
+                 multiple = FALSE,
+                 placeholder = "No file selected",
+                 accept = "csv"
+               ),
+               
+               sliderInput(
+                 inputId = "alpha_slider",
+                 label = "Bar Transparency",
+                 min = 0.2,
+                 max = 1.0,
+                 value = 0.7,
+                 step = 0.1
+               ),
+
+               # p(strong("Plot")),
+               # checkboxInput(
+               #   inputId = "unused_regressionLine",
+               #   label = "Show regression line",
+               #   value = FALSE
+               # ),
+               # 
+               # p(strong("Table")),
+               # checkboxInput(
+               #   inputId = "unused_conf.int",
+               #   label = "Display confidence interval",
+               #   value = FALSE
+               # ),
+               
+               actionButton(inputId = "anova_update", label = "Analyze")
+               ),
+             mainPanel(
+               plotOutput(outputId = "histogram_plot"),
+               tags$hr(),
+               h4("Summary statistics"),
+               tableOutput(outputId = "mean_table"),
+               tags$hr(),
+               h4("ANOVA summary"),
+               tableOutput(outputId = "anova_table")
+             )
+           )
+  ),
+
+# Linear Regression Tab Panel ---------------------------------------------
+
   tabPanel(
-    "Linear Regression Tab",
+    "Linear Regression",
     sidebarLayout(
       sidebarPanel(
         p(
@@ -60,14 +129,14 @@ ui <- navbarPage(
           value = TRUE
         ),
 
-        p(strong("Table")),
-        checkboxInput(
-          inputId = "conf.int",
-          label = "Display confidence interval",
-          value = FALSE
-        ),
+        # p(strong("Table")),
+        # checkboxInput(
+        #   inputId = "conf.int",
+        #   label = "Display confidence interval",
+        #   value = FALSE
+        # ),
         
-        actionButton(inputId = "update", label = "Update")
+        actionButton(inputId = "update", label = "Analyze")
       ),
       mainPanel(
         plotOutput(outputId = "plot"),
@@ -76,26 +145,107 @@ ui <- navbarPage(
         tableOutput(outputId = "table")
       )
     )
-  ),
-  # end tabPanel Upload
-  tabPanel("ANOVA",
-           sidebarLayout(
-             sidebarPanel(helpText("ANOVA goes here"),
-                          uiOutput("anova_columns_menu")),
-             mainPanel(helpText("ANOVA goes here"),
-                       tableOutput("anova"))
-           ))
-  
-  
+  )
+  # end tabPanel Linear regression
   )# End navbarPage
-  
+ 
+
+# Server ------------------------------------------------------------------
+
   server <- function(input, output, session) {
+    
+
+# Histogram and ANOVA -----------------------------------------------------
+
+    anova_data <- reactive({
+      inFile <- input$anova_file
+      if (is.null(inFile))
+        return(NULL)
+      read.csv(inFile$datapath) 
+    })
+
+    observeEvent(input$anova_update, {
+      if (!is.null(input$anova_file)) {
+        
+        df <- read.csv(input$anova_file$datapath, header = TRUE, sep = ",")
+        prob_lengths <- df %>% 
+          gather(key = species, value = length, factor_key = TRUE) %>% 
+          mutate(species = factor(species, 
+                                  levels = c("appositus",
+                                             "bifarius",
+                                             "frigidus",
+                                             "kirbiellus",
+                                             "sylvicola"),
+                                  ordered = TRUE,
+                                  labels = bombus_species_alphabetical))
+        summary_stats <- prob_lengths %>% 
+          group_by(species) %>% 
+          summarize(mean = mean(length),
+                    std_dev = sd(length),
+                    std_err = sd(length)/sqrt(n()),
+                    N = n())
+
+        # Plot
+        anova_ggObj <- ggplot(data = prob_lengths) +
+          geom_histogram(aes(x = length,
+                             fill = species),
+                         alpha = input$alpha_slider,
+                         position = "identity",
+                         binwidth = 0.2,
+                         color = "gray50") +
+          labs(x = "Proboscis length (mm)",
+               y = "Number of individuals",
+               fill = "Species") +
+          theme_bw() +
+          scale_x_continuous(limits = c(6, 14),
+                           breaks = seq(6, 14, 1)) +
+          scale_y_continuous(limits = c(0, 14),
+                             breaks = seq(0, 14, 2)) +
+          theme(axis.title = element_text(size = 17),
+                axis.text = element_text(size = 17)) +
+          theme(legend.text = element_text(face = "italic")) +
+          theme(panel.grid = element_line(color = "white"))
+      
+        output$histogram_plot <- renderPlot(anova_ggObj)
+        
+        # ANOVA
+        
+        #bee_lm <- lm(length ~ species, data = prob_lengths)
+        bee_aov <- aov(length ~ species, data = prob_lengths)
+        aov_summary <- summary(bee_aov)
+        bee_summary <- do.call(rbind.data.frame, summary(bee_aov))
+        rownames(bee_summary) <- c("Species", "Residuals")
+        
+        
+        # Tables
+        colnames(summary_stats) <- c("Species", "Mean", "Std. Dev", "Std. Err", "N")
+        output$mean_table <- renderTable(summary_stats)
+        
+        output$anova_table <- renderTable(
+          bee_summary, rownames = TRUE
+        )
+
+        #
+                #        summary_df <- data.frame(bee_sum$coefficients)
+        #        
+        #        rownames(summary_df) <- c("Intercept", "Proboscis length")
+        #        colnames(summary_df) <- c("Estimate", "Std. Error", "t Value", "Probability")
+        #        output$table <- renderTable(summary_df, rownames = TRUE)
+        
+        
+      } 
+    })
+
+# Linear Regression -------------------------------------------------------
+
     contentsrea <- reactive({
       inFile <- input$datafile
       if (is.null(inFile))
         return(NULL)
       read.csv(inFile$datapath)
     })
+    
+    
     observe({
       updateSelectInput(session, 
                         "var1", 
@@ -114,7 +264,7 @@ ui <- navbarPage(
         var1 <- df[, which(colnames(df) == input$var1)]
         var2 <- df[, which(colnames(df) == input$var2)]
         dat <- data.frame(var1 = var1, var2 = var2)
-        corResult <- cor.test(x = var1, y = var2)
+#        corResult <- cor.test(x = var1, y = var2)
         
         bee_lm <- lm(var2 ~ var1, data = dat)
         bee_sum <- summary(bee_lm)
