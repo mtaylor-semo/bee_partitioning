@@ -10,11 +10,24 @@ library(dplyr)
 
 # Globals -----------------------------------------------------------------
 
+# Used for labeling plots
 bombus_species_alphabetical <- c("B. appositus", 
                                  "B. bifarius", 
                                  "B. frigidus", 
                                  "B. kirbiellus", 
                                  "B. sylvicola")
+
+# Warning to upload file before analysis can begin.
+upload_warning <- function(){
+  showModal(modalDialog(
+    title = "Error",
+    "Upload a csv file first!"
+  ))
+}
+
+# User Interface ----------------------------------------------------------
+
+
 ui <- navbarPage(
   "Bumble bee partitioning",
 
@@ -140,6 +153,8 @@ ui <- navbarPage(
           label = "Show regression line",
           value = TRUE
         ),
+        
+        p(strong(textOutput(outputId = "warning"))),
 
         # p(strong("Table")),
         # checkboxInput(
@@ -230,22 +245,16 @@ ui <- navbarPage(
         
         
         # Tables
-        colnames(summary_stats) <- c("Species", "Mean", "Std. Dev", "Std. Err", "N")
+        colnames(summary_stats) <- c("Species", "Mean", "Std. Deviation", "Std. Error", "N")
         output$mean_table <- renderTable(summary_stats)
         
         output$anova_table <- renderTable(
           bee_summary, rownames = TRUE
         )
 
-        #
-                #        summary_df <- data.frame(bee_sum$coefficients)
-        #        
-        #        rownames(summary_df) <- c("Intercept", "Proboscis length")
-        #        colnames(summary_df) <- c("Estimate", "Std. Error", "t Value", "Probability")
-        #        output$table <- renderTable(summary_df, rownames = TRUE)
-        
-        
-      } 
+      } else {
+        upload_warning()
+      }
     })
 
 # Linear Regression -------------------------------------------------------
@@ -276,8 +285,7 @@ ui <- navbarPage(
         var1 <- df[, which(colnames(df) == input$var1)]
         var2 <- df[, which(colnames(df) == input$var2)]
         dat <- data.frame(var1 = var1, var2 = var2)
-#        corResult <- cor.test(x = var1, y = var2)
-        
+
         bee_lm <- lm(var2 ~ var1, data = dat)
         bee_sum <- summary(bee_lm)
         
@@ -325,6 +333,9 @@ ui <- navbarPage(
         }
         
         output$plot <- renderPlot(ggObj)
+      } else {
+        #showNotification("Upload a file first!", type = "error")
+        upload_warning()
       }
     })
   }
