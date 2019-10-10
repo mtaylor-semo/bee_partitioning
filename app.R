@@ -201,6 +201,10 @@ ui <- navbarPage(
 #      read.csv(inFile$datapath) 
 #    })
 
+    observeEvent(input$anova_file, {
+      updateActionButton(session, inputId = "anova_update", label = "Analyze")
+    })
+    
     observeEvent(input$anova_update, {
       if (!is.null(input$anova_file)) {
         
@@ -262,6 +266,7 @@ ui <- navbarPage(
         output$anova_table <- renderTable(
           bee_summary, rownames = TRUE
         )
+        updateActionButton(session, inputId = "anova_update", label = "Update")
 
       } else {
         upload_warning()
@@ -273,6 +278,7 @@ ui <- navbarPage(
     regression_data <- reactive({
       upload_file(input$datafile)
     })
+    
 #    regression_data <- reactive({
 #      inFile <- input$datafile
 #      if (is.null(inFile))
@@ -289,6 +295,10 @@ ui <- navbarPage(
                         "var2", 
                         choices = names(regression_data()),
                         selected = names(regression_data()[2]))
+    })
+    
+    observeEvent(input$datafile, {
+      updateActionButton(session, inputId = "update", label = "Analyze")
     })
     
     observeEvent(input$update, {
@@ -346,9 +356,12 @@ ui <- navbarPage(
                         se = FALSE, 
                         color = "darkred", 
                         size = 1.5)
-        }
+          
         
+        }
+        updateActionButton(session, inputId = "update", label = "Update")
         output$plot <- renderPlot(ggObj)
+        
       } else {
         #showNotification("Upload a file first!", type = "error")
         upload_warning()
