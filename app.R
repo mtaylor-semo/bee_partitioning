@@ -6,8 +6,6 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 
-#library(broom)
-
 # Globals -----------------------------------------------------------------
 
 # Used for labeling plots
@@ -16,6 +14,17 @@ bombus_species_alphabetical <- c("B. appositus",
                                  "B. frigidus", 
                                  "B. kirbiellus", 
                                  "B. sylvicola")
+
+# Upload file
+
+upload_file <- function(the_file = NULL) {
+  reactive({
+    inFile <- the_file
+    if (is.null(inFile))
+      return(NULL)
+    read.csv(inFile$datapath)
+  })
+}
 
 # Warning to upload file before analysis can begin.
 upload_warning <- function(){
@@ -26,7 +35,6 @@ upload_warning <- function(){
 }
 
 # User Interface ----------------------------------------------------------
-
 
 ui <- navbarPage(
   "Bumble bee partitioning",
@@ -180,16 +188,18 @@ ui <- navbarPage(
 # Server ------------------------------------------------------------------
 
   server <- function(input, output, session) {
-    
+    session$onSessionEnded(stopApp)
 
 # Histogram and ANOVA -----------------------------------------------------
 
-    anova_data <- reactive({
-      inFile <- input$anova_file
-      if (is.null(inFile))
-        return(NULL)
-      read.csv(inFile$datapath) 
-    })
+    anova_data <- upload_file(input$anova_file)
+    
+#    anova_data <- reactive({
+#     inFile <- input$anova_file
+#      if (is.null(inFile))
+#        return(NULL)
+#      read.csv(inFile$datapath) 
+#    })
 
     observeEvent(input$anova_update, {
       if (!is.null(input$anova_file)) {
@@ -259,23 +269,22 @@ ui <- navbarPage(
 
 # Linear Regression -------------------------------------------------------
 
-    contentsrea <- reactive({
+    regression_data <- reactive({
       inFile <- input$datafile
       if (is.null(inFile))
         return(NULL)
       read.csv(inFile$datapath)
     })
     
-    
     observe({
       updateSelectInput(session, 
                         "var1", 
-                        choices = names(contentsrea()),
-                        selected = names(contentsrea()[1]))
+                        choices = names(regression_data()),
+                        selected = names(regression_data()[1]))
       updateSelectInput(session, 
                         "var2", 
-                        choices = names(contentsrea()),
-                        selected = names(contentsrea()[2]))
+                        choices = names(regression_data()),
+                        selected = names(regression_data()[2]))
     })
     
     observeEvent(input$update, {
