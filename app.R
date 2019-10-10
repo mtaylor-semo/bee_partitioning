@@ -18,12 +18,10 @@ bombus_species_alphabetical <- c("B. appositus",
 # Upload file
 
 upload_file <- function(the_file = NULL) {
-  reactive({
     inFile <- the_file
     if (is.null(inFile))
       return(NULL)
     read.csv(inFile$datapath)
-  })
 }
 
 # Warning to upload file before analysis can begin.
@@ -192,7 +190,9 @@ ui <- navbarPage(
 
 # Histogram and ANOVA -----------------------------------------------------
 
-    anova_data <- upload_file(input$anova_file)
+    anova_data <- reactive({
+      upload_file(input$anova_file)
+    })
     
 #    anova_data <- reactive({
 #     inFile <- input$anova_file
@@ -271,11 +271,14 @@ ui <- navbarPage(
 # Linear Regression -------------------------------------------------------
 
     regression_data <- reactive({
-      inFile <- input$datafile
-      if (is.null(inFile))
-        return(NULL)
-      read.csv(inFile$datapath)
+      upload_file(input$datafile)
     })
+#    regression_data <- reactive({
+#      inFile <- input$datafile
+#      if (is.null(inFile))
+#        return(NULL)
+#      read.csv(inFile$datapath)
+#    })
     
     observe({
       updateSelectInput(session, 
