@@ -34,7 +34,17 @@ ui <- navbarPage(
              p(
                "Choose the Linear Regression tab above to perform a regression analysis of
                corolla length on proboscis length."
-             )
+             ),
+             tags$hr(),
+             
+             img(src='bombus_bifarius.jpg', align = "middle"),
+             tags$br(),
+             p(em("Bombus bifarius"), "foraging for nectar. It's extended proboscis 
+               is visible in the lower center of the image.",
+               tags$br(),
+               tags$a(href="https://commons.wikimedia.org/wiki/File:Bombus_bifarius_P1530268a.jpg",
+                    "Photo credit: Robert Webster, Wikimedia Commons, CC-SA 4.0"))
+             
              )),
 
 # Histogram and ANOVA tab -------------------------------------------------
