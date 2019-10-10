@@ -241,7 +241,8 @@ ui <- navbarPage(
           theme(axis.title = element_text(size = 17),
                 axis.text = element_text(size = 17)) +
           theme(legend.text = element_text(face = "italic")) +
-          theme(panel.grid = element_line(color = "white"))
+          theme(panel.grid = element_line(color = "white")) +
+          guides(fill = guide_legend(override.aes = list(alpha = 1)))
       
         output$histogram_plot <- renderPlot(anova_ggObj)
         
