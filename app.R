@@ -2,7 +2,10 @@
 ## https://shiny.rstudio.com/reference/shiny/0.14/fileInput.html
 
 library(shiny)
-library(tidyverse)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
 #library(broom)
 
 # Globals -----------------------------------------------------------------
@@ -44,7 +47,6 @@ ui <- navbarPage(
                tags$br(),
                tags$a(href="https://commons.wikimedia.org/wiki/File:Bombus_bifarius_P1530268a.jpg",
                     "Photo credit: Robert Webster, Wikimedia Commons, CC-SA 4.0"))
-             
              )),
 
 # Histogram and ANOVA tab -------------------------------------------------
@@ -305,10 +307,14 @@ ui <- navbarPage(
           labs(x = paste(input$var1, "(mm)"),
                y = paste(input$var2, "(mm)"),
                title = bquote(.(regression_formula) * ".   " ~ R^2 ~ " = " ~ .(r2))) +
-#               title = paste(regression_formula, ".", r_two, "= ", r2, ".")) +
           theme_bw() +
+          scale_x_continuous(limits = c(5, 13),
+                             breaks = seq(5, 13, 1)) +
+          scale_y_continuous(limits = c(3, 13),
+                             breaks = seq(3, 13, 1)) +
           theme(axis.title = element_text(size = 17),
-                axis.text = element_text(size = 17))
+                axis.text = element_text(size = 17)) +
+          theme(panel.grid = element_blank())
         
         if(input$regressionLine){
           ggObj <- ggObj + 
