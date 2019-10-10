@@ -37,7 +37,7 @@ upload_warning <- function(){
 # User Interface ----------------------------------------------------------
 
 ui <- navbarPage(
-  "Bumble bee partitioning",
+  strong("Bumble bee resource partitioning"),
 
 # Instruction tab ---------------------------------------------------------
 
@@ -159,7 +159,7 @@ ui <- navbarPage(
         checkboxInput(
           inputId = "regressionLine",
           label = "Show regression line",
-          value = TRUE
+          value = FALSE
         ),
         
         p(strong(textOutput(outputId = "warning"))),
@@ -318,12 +318,15 @@ ui <- navbarPage(
         output$table <- renderTable(summary_df, rownames = TRUE)
         
         # Plot
+        x_label <- sub("\\.", " ", input$var1)
+        y_label <- sub("\\.", " ", input$var2)
+        
         fit <- lm(var2 ~ var1, data = dat)
         dat$predicted <- predict(fit)
         ggObj <- ggplot(data = dat, aes(x = var1, y = var2)) +
           geom_point(color='gray60', size = 3) +
-          labs(x = paste(input$var1, "(mm)"),
-               y = paste(input$var2, "(mm)"),
+          labs(x = paste(x_label, "(mm)"),
+               y = paste(y_label, "(mm)"),
                title = bquote(.(regression_formula) * ".   " ~ R^2 ~ " = " ~ .(r2))) +
           theme_bw() +
           scale_x_continuous(limits = c(5, 13),
