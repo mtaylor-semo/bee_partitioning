@@ -75,12 +75,14 @@ ui <- navbarPage(theme = "semo_mods.css",
                plotOutput(outputId = "histogram_plot"),
                tags$hr(),
                h4("Summary statistics"),
-               DTOutput('tbl', width = "500px"),
+               DTOutput('summary_tbl', width = "500px"),
 #               tableOutput(outputId = "mean_table"),
                tags$hr(),
                h4("ANOVA summary"),
-               tableOutput(outputId = "anova_table"),
+               DTOutput("anova_tbl", width = "500px"),
                tags$hr()
+#               tableOutput(outputId = "anova_table"),
+#               tags$hr()
              )
            )
   ),

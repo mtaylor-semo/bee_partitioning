@@ -107,11 +107,16 @@ server <- function(input, output, session) {
         colnames(summary_stats) <- c("Species", "Mean", "Std. Deviation", "Std. Error", "N")
 #        output$mean_table <- renderTable(summary_stats)
         
-        output$anova_table <- renderTable(
-          bee_summary, rownames = TRUE
-        )
+#        output$anova_table <- renderTable(
+#          bee_summary, rownames = TRUE
+#        )
         
-        output$tbl = renderDT(datatable(summary_stats, 
+        output$anova_tbl <- renderDT(datatable(bee_summary,
+                                               class = "compact",
+                                               rownames = TRUE,
+                                               options = list(dom = "t")) %>% 
+                                     formatRound(columns = 2:6, digits = 2))
+        output$summary_tbl = renderDT(datatable(summary_stats, 
                                         class = "compact",
                                         rownames = FALSE,
                                         options = list(dom = 't')) %>% 
