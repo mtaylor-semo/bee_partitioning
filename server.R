@@ -187,6 +187,7 @@ server <- function(input, output, session) {
                     ) %>% 
             formatRound(columns = 1:4, digits = 2)
           )
+        output$regression_model <- renderText(paste("Model:", regression_formula))
 #        output$table <- renderTable(summary_df, rownames = TRUE)
         
         # Plot
