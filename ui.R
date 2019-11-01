@@ -124,13 +124,6 @@ ui <- navbarPage(theme = "semo_mods.css",
         
         p(strong(textOutput(outputId = "warning"))),
 
-        # p(strong("Table")),
-        # checkboxInput(
-        #   inputId = "conf.int",
-        #   label = "Display confidence interval",
-        #   value = FALSE
-        # ),
-        
         actionButton(inputId = "update", label = "Analyze")
       ),
       mainPanel(

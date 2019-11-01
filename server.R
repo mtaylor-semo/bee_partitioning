@@ -128,13 +128,9 @@ server <- function(input, output, session) {
     regression_data <- reactive({
       upload_file(input$datafile)
     })
-    
-#    regression_data <- reactive({
-#      inFile <- input$datafile
-#      if (is.null(inFile))
-#        return(NULL)
-#      read.csv(inFile$datapath)
-#    })
+
+    ##  Code to build menus from column headers 
+    ## https://blog.efpsa.org/2019/04/24/7-easy-steps-to-building-your-own-shiny-app-from-scratch/
     
     observe({
       updateSelectInput(session, 
