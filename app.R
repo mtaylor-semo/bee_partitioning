@@ -285,6 +285,9 @@ ui <- navbarPage(
 #        return(NULL)
 #      read.csv(inFile$datapath)
 #    })
+
+    ##  Code to build menus from column headers 
+    ## https://blog.efpsa.org/2019/04/24/7-easy-steps-to-building-your-own-shiny-app-from-scratch/
     
     observe({
       updateSelectInput(session, 
