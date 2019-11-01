@@ -179,7 +179,15 @@ server <- function(input, output, session) {
         
         rownames(summary_df) <- c("Intercept", "Proboscis length")
         colnames(summary_df) <- c("Estimate", "Std. Error", "t Value", "Probability")
-        output$table <- renderTable(summary_df, rownames = TRUE)
+        output$regression_table <- renderDT(
+          datatable(summary_df, 
+                    rownames = TRUE,
+                    class = "compact",
+                    options = list(dom = "t")
+                    ) %>% 
+            formatRound(columns = 1:4, digits = 2)
+          )
+#        output$table <- renderTable(summary_df, rownames = TRUE)
         
         # Plot
         x_label <- sub("\\.", " ", input$var1)

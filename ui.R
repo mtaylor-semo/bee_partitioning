@@ -131,8 +131,10 @@ ui <- navbarPage(theme = "semo_mods.css",
       mainPanel(
         plotOutput(outputId = "plot"),
         tags$hr(),
-        h4("Analysis summary"),
-        tableOutput(outputId = "table")
+        h4("Regression summary"),
+        DTOutput("regression_table", width = "450px"),
+        tags$hr()
+#        tableOutput(outputId = "table")
       )
     )
   )
