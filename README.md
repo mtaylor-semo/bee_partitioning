@@ -24,15 +24,15 @@ I use to make the graphs, etc.
 
 * Students will calculate mean and standard deviation, and standard error for all five species. They will either make a histogram by hand for 1-2 species, or use software to make histograms for all species.
 
-	Data file: bombus\_proboscis\_lengths.csv
+	Data file: proboscis\_lengths.csv
 	
-	**To do:** Consider writing a Shiny app for students to upload and plot histograms. Write Shiny ANOVA app.
+	**Shiny:** Shiny app allows students to upload data file, plot histograms, and view summary stats and ANOVA results.
 	
 * Students make a scatter plot showing relationship between proboscis length and corolla length. (Is this best position for this step?)
 
 	Data file: proboscis\_corolla\_lengths.csv
 	
-	**To do:** Write a Shiny app for linear regression and show trend line.
+	**Shiny:** Shiny app lets students upload data file and view results of linear regression.
 	
 * Students sum the number of visits by each *Bombus* species for four classes of corolla length. They then make a column graph to show the number of visits for each species. This will mimic the Nature Scitable figure linked above. 
 
@@ -40,7 +40,7 @@ I use to make the graphs, etc.
 	
 *	Students plot relative abundances vs sites from two transects along an altitudinal gradient to show that *Bombus* species with similar proboscis lengths occur at different altitudes.
 
-	Data file: gothic\_transect.csv_
+	Data file: gothic\_transect.csv
 	
 ### Literature Cited
 
