@@ -6,7 +6,7 @@
 %\printanswers
 
 \usepackage{graphicx}
-	\graphicspath{{/Users/goby/Pictures/teach/163/lab/}
+	\graphicspath{{/Users/goby/Pictures/teach/063/}
 	{img/}} % set of paths to search for images
 
 \usepackage{geometry}
@@ -130,27 +130,24 @@ Coexisting species that use one or more resources in the same way compete
 with each other for the resources. Competition is reduced if species
 use resources in different ways.
 
-\textbf{Build but keep it short}
+%\textbf{Build but keep it short}
 
 
-You will analyze several data sets to explore resource partitioning for five
+You will analyze several data sets to test for resource partitioning among five
 species of bumble bees in the genus \textit{Bombus.} These data were collected
 by Macior (1974), Pyke (1982), and Pyke et~al.~(2012) near Crested Butte, Colorado,
-southwest of Denver. \textbf{Put map in pre-lab.}
+southwest of Denver.
 
 Researchers walked transects (paths) counting species of bumble bees and the 
 species of flowers visited by the bees for pollen and nectar. They walked
 three transects and counted a total of 13,136 individuals for 12 species of 
-\textit{Bombus} (Pyke 1982).
-
-For simplicity, you'll use data for five of the species most commonly 
-sighted along one of the transects.
+\textit{Bombus} (Pyke 1982). For simplicity, you'll use data for the five most common 
+species along one transect.
 
 
 \subsubsection*{Analysis: proboscis lengths}
 
-Download bombus\_data.xlsx\footnote{All data currently in one
-spreadsheet.} and click on the “Proboscis Lengths” tab. These data are
+Point your browser at \url{http://mtaylor4.semo.edu/~goby/bi163/}. Download bombus\_data.xlsx and open the file. Click on the “Proboscis Lengths” tab at the bottom of the sheet. These data are
  proboscis lengths measured from 50 individuals for each of five \textit{Bombus} species. All measurements are in millimeters (mm).\footnote{Data simulated 
 from results of Macior (1974).}
 
@@ -177,26 +174,26 @@ species. Round your results to one decimal place.
 \toprule
 Species & $\meanY$ & $s$ \tabularnewline
 \midrule
-& &  \tabularnewline
+\tabularnewline
 \textit{B.~appositus} & 
 \ifprintanswers \textbf{12.8} \else \rule{1in}{0.4pt} \fi &
 \ifprintanswers \textbf{0.4} \else \rule{1in}{0.4pt}  \fi 
-\tabularnewline[2em]
+\tabularnewline[1.5em]
 %
 \textit{B.~bifarius} &
 \ifprintanswers \textbf{8.5} \else  \rule{1in}{0.4pt} \fi &
 \ifprintanswers \textbf{0.4} \else \rule{1in}{0.4pt} \fi 
-\tabularnewline[2em]
+\tabularnewline[1.5em]
 %
 \textit{B.~frigidus} & 
 \ifprintanswers \textbf{7.3} \else \rule{1in}{0.4pt} \fi &
 \ifprintanswers \textbf{0.3} \else \rule{1in}{0.4pt} \fi 
-\tabularnewline[2em]
+\tabularnewline[1.5em]
 %
 \textit{B.~kirbiellus} &
 \ifprintanswers \textbf{12.1} \else \rule{1in}{0.4pt} \fi & 
 \ifprintanswers \textbf{0.4} \else \rule{1in}{0.4pt} \fi 
-\tabularnewline[2em]
+\tabularnewline[1.5em]
 %
 \textit{B.~sylvicola} & 
 \ifprintanswers \textbf{8.4} \else \rule{1in}{0.4pt} \fi & 
@@ -205,6 +202,7 @@ Species & $\meanY$ & $s$ \tabularnewline
 
 \bottomrule
 \end{tabular}
+
 
 \bigskip
 
@@ -218,13 +216,15 @@ mean by the amount of the deviation. For example, if the mean is
 10.6 (10.2\,$+$\,0.4). 
 
 \ifprintanswers
-	\includegraphics[width=\textwidth]{mean_proboscis_plot_key}
+	\includegraphics[width=\linewidth]{mean_proboscis_plot_key}
 \else
-	\includegraphics[width=\textwidth]{mean_proboscis_plot_blank}
+	\includegraphics[width=\linewidth]{mean_proboscis_plot_blank}
 \fi
 
-\textbf{Consider adding student-built histogram plots, or a shiny 
-	app for histograms to show spread and overlap of data.}
+%\textbf{Consider adding student-built histogram plots, or a shiny 
+%	app for histograms to show spread and overlap of data.}
+
+\newpage
 
 \question
 The results suggest two size classes of \textit{Bombus}, based on
@@ -249,16 +249,15 @@ each group.
 	\bottomrule
 \end{tabular}
 
-\textbf{Consider ANOVA to test for differences in proboscis lengths. 
-	Shiny app?}
+%\textbf{Consider ANOVA to test for differences in proboscis lengths. 
+%	Shiny app?}
 
 \bigskip
 
 \question
-Could proboscis length affect the flower size chosen by the bumble bees? Write a single sentence hypothesis that addresses this question. \textbf{Wording?}
+Write a single sentence hypothesis that states how proboscis length might affect the flower size chosen by the bumble bees.
 
-\AnswerBox{2\baselineskip}{The length of the proboscis determines the size
-	of the flowers chosen by bumble bees.}
+\AnswerBox{2\baselineskip}{The length of the proboscis is positively correlated with the size	of the flowers chosen by bumble bees.}
 
 \question
 Write a prediction based on your hypothesis.
@@ -268,9 +267,7 @@ Write a prediction based on your hypothesis.
 
 \subsubsection*{Analysis: proboscis length and corolla length}\label{sec:proboscis_flower_length}
 
-\textbf{Inc. pics of bee proboscis and flower corolla in pre-lab}
-
-Pyke et al.~(2012) measured the corolla lengths for all species of flowers visited by different species and castes (queens, workers, and males) of \textit{Bombus.} You will find the average corolla and proboscis lengths recorded in the “Proboscis and corolla lengths” tab. 
+Pyke et al.~(2012) measured the corolla lengths for all flowers visited by different species and castes (queens, workers, and males) of \textit{Bombus.} Their results for mean corolla and proboscis lengths are reported in the “Proboscis and corolla lengths” tab. 
 
 \question
 Make a scatterplot of the data with proboscis length on the x-axis and corolla length on the y-axis.
@@ -281,59 +278,59 @@ Make a scatterplot of the data with proboscis length on the x-axis and corolla l
 	\includegraphics[width=\textwidth]{proboscis_corolla_blank}
 \fi
 
-\textbf{Consider shiny app to do linear regression?}
+%\textbf{Consider shiny app to do linear regression?}
 
 \question
-Do the results agree with your prediction? Explain.
+Do their results agree with your prediction? Explain.
 
-\AnswerBox{3\baselineskip}{The scatterplot shows two clusters of points. 
+\AnswerBox{0.2\textheight}{The scatterplot shows two clusters of points. 
 \textit{Bombus} species with long proboscises tend to visit plant species with 
 long corollas. \textit{Bombus} species with short proboscises tend to visit plant species with short corollas.}
 
 
 \subsubsection*{Analysis: flower visitation by \textit{Bombus}}
 
-The scatterplot you made was based on average values for proboscis and corolla 
-lengths. Does this mean that \textit{Bombus} visited \emph{only} size-appropriate flowers?  
+The scatterplot you made was based on mean values for proboscis and corolla 
+lengths. Does this show that \textit{Bombus} visited \emph{only} size-appropriate flowers?  
 
-To answer this question Pyke (1982) recorded the flower species visited by the five \textit{Bombus} species. They recorded 7,161 visits to 34 plant species. Corolla lengths ranged from 0-27.2 mm. You will find their data in the “Flower visits” tab.
+To answer this question Pyke (1982) recorded the flower species visited by the five \textit{Bombus} species. They recorded 7,161 visits to 34 plant species. Corolla lengths ranged from 0.0–27.2 mm. Their data are reported in the “Flower visits” tab.
 
-To graph the data, Pyke grouped the flowers into four size classes based on corolla length. \textbf{Make up names for size classes?}
+To graph the data, Pyke grouped the flowers into four size classes based on corolla length. %\textbf{Make up names for size classes?}
 
-0–3.99 mm\newline
-4–7.99 mm\newline
-8–11.99 mm\newline
-12$+$ mm
+0.00–3.99 mm\newline
+4.00–7.99 mm\newline
+8.00–11.99 mm\newline
+12.00$+$ mm
 
 \question
-Tally the number of visits by each species of \textit{Bombus} to each size class of flowers. \textbf{Wording?}
+Calculate the number of visits by each species of \textit{Bombus} to each size class of flowers. %\textbf{Wording?}
 
-\emph{Follow the following instructions carefully.}
+\emph{Follow these instructions carefully.}
 
 \begin{enumerate}
-	\item Enter 0 mm, 4 mm, 8 mm, and 12 mm into cell row J1 to M1 (one per cell)
+	\item Enter 0 mm, 4 mm, 8 mm, and 12 mm into cell row \textsc{j}1 to \textsc{m}1 (one per cell)
 	to represent the \emph{minimum} corolla length needed for each size class.
 	
-	\item Enter the five species names into column I2 to I6.
+	\item Enter the five species names into column \textsc{i}2 to \textsc{i}6.
 	
 	\textsc{Calculate} the number of visits by \textit{B.~appositus} to the four
 	size classes of flowers. 
 	
 	\item Click in cell J2, and then use the \textsc{sum} function to add the
 	number of flower visits in the \textit{B. appositus} column with corolla
-	lengths less than 3.99. For this cell, you should sum cells C28 to C35. 
+	lengths less than 3.99~mm. For this cell, you should sum cells \textsc{c}28 to \textsc{c}35. 
 	(You can sum only the cells with values, if you wish.)
 	
-	\item Click in cell K2. Sum the values for \textit{B. appositus} for
-	all plant species with corolla lengths between 4–8.9 mm. 
+	\item Click in cell \textsc{k}2. Sum the values for \textit{B. appositus} for
+	all plant species with corolla lengths between 4.00–7.9~mm. 
 	
-	\item Click in cell L2 and sum the values for \textit{B. appositus} for
-	all plant species with corolla lengths between 8–11.9 mm.
+	\item Click in cell \textsc{l}2 and sum the values for \textit{B. appositus} for
+	all plant species with corolla lengths between 8.00–11.9~mm.
 	
-	\item Click in cell M2 and sum the values for \textit{B. appositus} for
-	all plant species with corolla lengths 12 mm or longer.
+	\item Click in cell \textsc{m}2 and sum the values for \textit{B. appositus} for
+	all plant species with corolla lengths 12.00~mm or longer.
 	
-	\item Repeat this process for the four remaining species. You can ask your instructor to check to be sure your results look correct. 
+	\item Repeat this process in the appropriate rows for the four remaining species. You can ask your instructor to check to be sure your results look correct. 
 	
 \end{enumerate}
 
@@ -365,7 +362,7 @@ blank graphs on the next page to sketch your plots.
 \question[Checkout]
 Do the results so far provide evidence of resource partitioning?  Explain. Include all results obtained so far to support your conclusion.
 
-\AnswerBox{2\baselineskip}{So far, the results suggest that partitioning
+\AnswerBox{0.1\textheight}{So far, the results suggest that partitioning
 occurs between species with short versus long proboscises. However, bumble
 bees with similar proboscis lengths use similar size flowers.}
 
@@ -373,6 +370,8 @@ bees with similar proboscis lengths use similar size flowers.}
 
 \question[Checkout]
 Was your hypothesis supported or falsified? Explain why.
+
+\AnswerBox{0.1\textheight}{Results support a hypothesis that at least some bumble bees partition resources based on flower size. However, those bees fall into two groups.}
 
 \subsubsection*{Analysis: elevation and relative abundance}
 
@@ -392,14 +391,12 @@ of \textit{B. appositus} among long-proboscis bees was calculated by
 
 \begin{equation*}
 \dfrac{\mathrm{Number~of}~appositus}{\mathrm{Number~of}~appositus + 
-\mathrm{Number~of}~kirbiellus}
+\mathrm{Number~of}~kirbiellus}.
 \end{equation*}
 
 The Gothic Transect tab has the relative abundance of the five 
-\textit{Bombus} species for that transect. The Gothic Transect 
-had 17 sites at elevations between 
-2,873–3,697~m (9,426–12,129~ft) above sea level. Notice the
-distinct change in gradient starting at site 11.
+\textit{Bombus} species for 17 sites at elevations between 
+2,873–3,697~m (9,426–12,129~ft) above sea level. The gradient becomes much steeper starting at site~11.
 
 \begin{multicols}{2}
 
