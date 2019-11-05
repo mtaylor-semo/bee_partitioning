@@ -148,11 +148,14 @@ species along one transect.
 \subsubsection*{Analysis: proboscis lengths}
 
 Point your browser at \url{http://mtaylor4.semo.edu/~goby/bi163/}. Download bombus\_data.xlsx and open the file. Click on the “Proboscis Lengths” tab at the bottom of the sheet. These data are
- proboscis lengths measured from 50 individuals for each of five \textit{Bombus} species. All measurements are in millimeters (mm).\footnote{Data simulated 
-from results of Macior (1974).}
+ proboscis lengths measured from 50 individuals for each of five \textit{Bombus} species. All measurements are in millimeters (mm).\footnote{Data simulated  from results of Macior (1974).}
 
+\begin{questions}
+
+\question
 Use the \texttt{average} function in Excel to calculate the mean $\left(\meanY\right)$ proboscis length for each species. Use the \texttt{stdev.s} function
-to calculate the sample standard deviation $\left(s\right)$ for each species. %Use the \texttt{count} and \texttt{sqrt} functions to calculate standard 
+to calculate the sample standard deviation $\left(s\right)$ for each species. Fill in the blanks of this table. Round your results to 1 decimal place. 
+%Use the \texttt{count} and \texttt{sqrt} functions to calculate standard 
 %error of the mean. As a reminder, the equation to calculate $\mathrm{SE}_{\meanY}$ is
 %
 %\begin{equation*} \label{eq:stderr}
@@ -161,14 +164,11 @@ to calculate the sample standard deviation $\left(s\right)$ for each species. %U
 %
 %where $s$ is the standard deviation of the sample and $n$ is the sample size. 
 
-\newpage
+%\newpage
 
-\begin{questions}
-
-\question
-Fill in the blanks with the mean $\left(\meanY\right)$ proboscis lengths and
-sample standard deviation $\left(s\right)$ for the five \textit{Bombus} 
-species. Round your results to one decimal place.
+%Fill in the blanks with the mean $\left(\meanY\right)$ proboscis lengths and
+%sample standard deviation $\left(s\right)$ for the five \textit{Bombus} 
+%species. Round your results to one decimal place.
 
 \begin{tabular}{@{}lcc@{}}
 \toprule
@@ -204,7 +204,7 @@ Species & $\meanY$ & $s$ \tabularnewline
 \end{tabular}
 
 
-\bigskip
+\newpage
 
 \question
 Sketch a graph of the means with their standard deviations. Mark a 
@@ -212,8 +212,8 @@ large point above each species name at the proper height for the
 mean. Draw a thin vertical line that extends above and below the 
 mean by the amount of the deviation. For example, if the mean is 
 10.2~mm and the standard deviation is 0.4~mm, mark a point at 
-10.2, and then draw a thin line from 9.8 (10.2\,$-$\,0.4) to
-10.6 (10.2\,$+$\,0.4). 
+10.2, and then draw a thin line from 10.6 (10.2\,$+$\,0.4) to
+9.8 (10.2\,$-$\,0.4). 
 
 \ifprintanswers
 	\includegraphics[width=\linewidth]{mean_proboscis_plot_key}
@@ -224,7 +224,6 @@ mean by the amount of the deviation. For example, if the mean is
 %\textbf{Consider adding student-built histogram plots, or a shiny 
 %	app for histograms to show spread and overlap of data.}
 
-\newpage
 
 \question
 The results suggest two size classes of \textit{Bombus}, based on
@@ -260,7 +259,7 @@ Write a single sentence hypothesis that states how proboscis length might affect
 \AnswerBox{2\baselineskip}{The length of the proboscis is positively correlated with the size	of the flowers chosen by bumble bees.}
 
 \question
-Write a prediction based on your hypothesis.
+Write a prediction based on your hypothesis. Remember that predictions take the form of an if\dots then statement. I'll get you started: If proboscis length determines the flower size used by a bee, then\dots
 
 \AnswerBox{3\baselineskip}{If proboscis length determines flower size chosen, then \textit{Bombus} species with short proboscises will chose smaller flowers than species with longer proboscises.}
 
@@ -375,12 +374,6 @@ Was your hypothesis supported or falsified? Explain why.
 
 \subsubsection*{Analysis: elevation and relative abundance}
 
-\textbf{should prob have hypothesis and prediction questions here
-but have to think of prompting text to lead students in right 
-direction. Don't want them to predict which elevations would be
-used by species, but simply whether species with similar proboscis
-lengths would occupy similar elevations.}
-
 Pyke (1982) noticed that the relative abundance of bees with long 
 and short proboscises seemed to change as elevation increased. To 
 verify his observations, Pyke calculated the relative abundance
@@ -396,7 +389,9 @@ of \textit{B. appositus} among long-proboscis bees was calculated by
 
 The Gothic Transect tab has the relative abundance of the five 
 \textit{Bombus} species for 17 sites at elevations between 
-2,873–3,697~m (9,426–12,129~ft) above sea level. The gradient becomes much steeper starting at site~11.
+2,873–3,697~m (9,426–12,129~ft) above sea level. The gradient becomes much steeper starting at site~11, as shown in the following table and figure.
+
+\newpage
 
 \begin{multicols}{2}
 
@@ -452,10 +447,23 @@ heighest elevation for Site~17).
 
 \AnswerBox{\baselineskip}{621~m.}
 
+\question
+Write a hypothesis that states whether species of \textit{Bombus} 
+with similar proboscis lengths feed at different elevations. 
+
+\AnswerBox{0.1\textheight}{Species with similar proboscis lengths occur at different elevations.}
+
+\question
+Turn your hypothesis into a prediction. If you were to observe bees at one site, would you predict
+to see just one species of bee from the same proboscis size class? Or, might multiple
+species of the same class be present but one species is much more abundant than the other species?
+
+\AnswerBox{0.1\textheight}{If I observe bees at a single elevation, then 
+I will see mostly one species of bee for a given size class.}
 
 
 \question
-Plot a line graph of the relative abundance of the two long-proboscis \textit{Bombus} species at each site of the Gothic Transect in the left panel of the blank graph on page~\pageref{fig:relative_abundance}. 
+Plot a line graph of the relative abundance of the two long-proboscis \textit{Bombus} species at each site of the Gothic Transect in the top panel of the blank graph on page~\pageref{fig:relative_abundance}. 
 
 To make the line graph, make a dot above each site number
 for the relative abundance of a species. Then connect the dots with a line. Use a solid line for \textit{B.~appositus} and a dashed 
@@ -464,19 +472,10 @@ line for \textit{B.~kirbiellus.}
 \question
 Plot a line graph of the relative abundance of the three 
 short-proboscis \textit{Bombus} species at each site of the Gothic 
-transect in the lower left panel of the blank graph on 
+transect in the bottom panel of the blank graph on 
 page~\pageref{fig:relative_abundance}. Use a solid line for 
 \textit{B.~bifarius}, a short-dashed line for \textit{B.~frigidus,} 
 and a long-dashed line for \textit{B.~sylvicola.}
-
-%\makebox[\textwidth][c]{
-\label{fig:relative_abundance}
-\ifprintanswers
-	\includegraphics[height=\textheight]{gothic_relative_abundance_key}
-\else
-	\includegraphics[height =\textheight]{gothic_relative_abundance_blank}
-\fi
-%}
 
 \subsubsection*{Interpret: elevation and relative abundance}
 \question
@@ -486,7 +485,7 @@ lower (Site~1) to higher (Site~17) elevations? At which site(s)
 and elevations does one species start to become more abundant
 than the other?
 
-\AnswerBox{3\baselineskip}{\textit{B.~appositus} starts very 
+\AnswerBox{0.05\textheight}{\textit{B.~appositus} starts very 
 high rel.~abund.~but decreases sharply between starting at
 site~11. \textit{B. kirbiellus} shows the opposite pattern.}
 
@@ -498,21 +497,38 @@ most abundant species? At what elevations is \textit{B.~frigidus}
 the most abundant species? At what elevations is \textit{B.~sylvicola} 
 the most abundant species?
 
-\AnswerBox{4\baselineskip}{\textit{B.~bifarius} is most abundant
+\AnswerBox{0.05\textheight}{\textit{B.~bifarius} is most abundant
 at the lower elevation sites but is no longer the most abundant 
 species by site 9–10. \textit{B.~frigidus} the most abundant species
 between sites 9-11. \textit{B.~sylvicola} becomes most abundant 
 between sites 12–13.}
 
-
 \question
 Write a statement that describes how \textit{Bombus} species with
 proboscises of similar lengths partition elevation.
 
-\AnswerBox{2\baselineskip}{Species with similar-sized proboscises
+\AnswerBox{0.02\textheight}{Species with similar-sized proboscises
 tend to occur at different elevations.}
 
+\newpage
+
+%\makebox[\textwidth][c]{
+\label{fig:relative_abundance}
+\ifprintanswers
+	\includegraphics[height=\textheight]{gothic_relative_abundance_key}
+\else
+	\includegraphics[height =\textheight]{gothic_relative_abundance_blank}
+\fi
+%}
+
+
+
 \subsubsection*{Conclusion: resource partitioning}
+
+\question[Checkout]
+What can you conclude based on the evidence? What your hypothesis supported?
+
+\AnswerBox{0.05\textheight}{Supported. Actually, depends on their hypothesis.}
 
 \question[Checkout]
 Describe the evidence you now have and how it supports resource partitioning of flower size and elevation among the five species of 
@@ -531,10 +547,6 @@ elevations. As elevation increases, another species tends to become
 more abundant.
 \end{AnswerPage}
 
-\question[Checkout]
-What can you conclude based on the evidence? What your hypothesis supported?
-
-\AnswerBox{0.1\textheight}{Supported. Actually, depends on their hypothesis.}
 
 \end{questions}
 
