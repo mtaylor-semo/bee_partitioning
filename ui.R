@@ -2,6 +2,7 @@ library(shiny)
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+library(DT)
 
 # User Interface ----------------------------------------------------------
 
@@ -14,7 +15,9 @@ ui <- navbarPage(theme = "semo_mods.css",
 # Instruction tab ---------------------------------------------------------
 
   tabPanel("Instructions",
-           mainPanel(
+           #mainPanel(
+             fluidRow(
+               column(6,
              p(
                "Use this site to help you analyze the",
                em("Bombus"), "bumble bee data for resource 
@@ -30,9 +33,10 @@ ui <- navbarPage(theme = "semo_mods.css",
              p(
                "Choose the Linear Regression tab above to perform a regression analysis of
                 proboscis length on corolla length."
-             ),
-             tags$hr(),
-             
+             )
+               ),
+#             tags$hr(),
+             column(6,
              img(src='bombus_bifarius.jpg', align = "middle"),
              tags$br(),
              p(em("Bombus bifarius"), "foraging for nectar. It's extended proboscis 
@@ -40,7 +44,7 @@ ui <- navbarPage(theme = "semo_mods.css",
                tags$br(),
                tags$a(href="https://commons.wikimedia.org/wiki/File:Bombus_bifarius_P1530268a.jpg",
                     "Photo credit: Robert Webster, Wikimedia Commons, CC-SA 4.0"))
-             )),
+             ))),
 
 # Histogram and ANOVA tab -------------------------------------------------
 
@@ -80,9 +84,9 @@ ui <- navbarPage(theme = "semo_mods.css",
                tags$hr(),
                h4("ANOVA summary"),
                DTOutput("anova_tbl", width = "500px"),
+               tags$hr(),
+               tableOutput(outputId = "anova_table"),
                tags$hr()
-#               tableOutput(outputId = "anova_table"),
-#               tags$hr()
              )
            )
   ),
