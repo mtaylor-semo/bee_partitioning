@@ -48,55 +48,62 @@ ui <- navbarPage(theme = "semo_mods.css",
 
 # Histogram and ANOVA tab -------------------------------------------------
 
-  tabPanel("Histograms and ANOVA",
-           sidebarLayout(
-             sidebarPanel(
-               p(
-                 "Upload the csv file with the proboscis length data for the five",
-                 em("Bombus"), "species. Your file must be in csv format to upload."
-               ),
-               
-               fileInput(
-                 inputId = "anova_file",
-                 label = "Upload a data file",
-                 multiple = FALSE,
-                 placeholder = "No file selected",
-                 accept = "csv"
-               ),
-               
-               sliderInput(
-                 inputId = "alpha_slider",
-                 label = "Bar Transparency",
-                 min = 0.2,
-                 max = 1.0,
-                 value = 0.7,
-                 step = 0.1
-               ),
-
-               actionButton(inputId = "anova_update", label = "Analyze")
-               ),
-             mainPanel(
-               plotOutput(outputId = "histogram_plot"),
-               tags$hr(),
-               h4("Summary statistics"),
-               DTOutput('summary_tbl', width = "500px"),
-#               tableOutput(outputId = "mean_table"),
-               tags$hr(),
-               h4("ANOVA summary"),
-               DTOutput("anova_tbl", width = "500px"),
-               tags$hr(),
-               tableOutput(outputId = "anova_table"),
-               tags$hr()
-             )
-           )
+  tabPanel(
+    "Histograms and ANOVA",
+    fluidRow(
+      column(
+        4,
+        wellPanel(
+          p(
+            "Upload the csv file with the proboscis length data for the five",
+            em("Bombus"), "species. Your file must be in csv format to upload."
+          ),
+          fileInput(
+            inputId = "anova_file",
+            label = "Upload a data file",
+            multiple = FALSE,
+            placeholder = "No file selected",
+            accept = "csv"
+          ),
+          sliderInput(
+            inputId = "alpha_slider",
+            label = "Bar Transparency",
+            min = 0.2,
+            max = 1.0,
+            value = 0.7,
+            step = 0.1
+          ),
+          actionButton(inputId = "anova_update", label = "Analyze")
+        )
+      ),
+      column(
+        8,
+        plotOutput(outputId = "histogram_plot")
+      )
+    ),
+    hr(),
+    fluidRow(
+      column(
+        6,
+        # tags$hr(),
+        h4("Summary statistics"),
+        DTOutput("summary_tbl", width = "500px"),
+      ),
+      column(
+        6,
+        h4("ANOVA summary"),
+        DTOutput("anova_tbl", width = "500px"),
+      )
+    )
   ),
 
 # Linear Regression Tab Panel ---------------------------------------------
 
   tabPanel(
     "Linear Regression",
-    sidebarLayout(
-      sidebarPanel(
+    fluidRow(
+      column(4,
+             wellPanel(
         p(
           "Upload the csv file with the proboscis and corolla length data.
           Your file must be in csv format to upload."
@@ -131,17 +138,19 @@ ui <- navbarPage(theme = "semo_mods.css",
         p(strong(textOutput(outputId = "warning"))),
 
         actionButton(inputId = "update", label = "Analyze")
-      ),
-      mainPanel(
-        plotOutput(outputId = "plot"),
+      )),
+      column(8,
+        plotOutput(outputId = "plot")),
         tags$hr(),
+      fluidRow(
+        column(12, offset = 4,
         h4("Regression summary"),
         DTOutput("regression_table", width = "450px"),
         tags$br(),
         textOutput("regression_model"),
         tags$hr()
 #        tableOutput(outputId = "table")
-      )
+      ))
     )
   )
   # end tabPanel Linear regression
