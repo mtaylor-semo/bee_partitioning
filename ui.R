@@ -63,6 +63,7 @@ ui <- navbarPage(
 
   tabPanel(
     "Histograms and ANOVA",
+    tags$style(HTML(".irs--shiny .irs-bar, .irs--shiny .irs-single {background: #9d2235;}")),
     fluidRow(
       column(
         4,
@@ -162,7 +163,7 @@ ui <- navbarPage(
         DTOutput("regression_table", width = "95%")
       ),
     ),
-    p(),
+    br(),
     hr(),
     p(),
   ) # end tabPanel Linear regression
