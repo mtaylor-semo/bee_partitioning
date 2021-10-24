@@ -209,17 +209,17 @@ server <- function(input, output, session) {
                              breaks = seq(3, 13, 1)) +
           theme(axis.title = element_text(size = 17),
                 axis.text = element_text(size = 17)) +
-          theme(panel.grid = element_blank())
+          theme(panel.grid = element_blank()) +
         
-        if(input$regressionLine){
-          ggObj <- ggObj + 
+#        if(input$regressionLine){
+#          ggObj <- ggObj + 
             geom_smooth(method = "lm",
                         se = FALSE, 
                         color = "#9D2235", # Cardiac Red 
                         size = 1.5)
           
         
-        }
+ #       }
         updateActionButton(session, inputId = "update", label = "Update")
         output$plot <- renderPlot(ggObj)
         
