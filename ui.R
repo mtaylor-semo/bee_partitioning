@@ -154,7 +154,8 @@ ui <- navbarPage(
       column(3,
         offset = 4,
         h4("Regression summary"),
-        textOutput("regression_model")
+        textOutput("regression_model"),
+        textOutput("regression_r2")
       ),
       column(
         5,

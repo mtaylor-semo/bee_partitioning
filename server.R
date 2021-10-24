@@ -189,8 +189,8 @@ server <- function(input, output, session) {
             formatRound(columns = 1:4, digits = 2)
           )
         output$regression_model <- renderText(paste("Model:", regression_formula))
-#        output$table <- renderTable(summary_df, rownames = TRUE)
-        
+        output$regression_r2 <- renderText(paste("R² =", r2))
+
         # Plot
         x_label <- sub("\\.", " ", input$var1)
         y_label <- sub("\\.", " ", input$var2)
