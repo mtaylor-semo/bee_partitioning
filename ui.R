@@ -26,7 +26,8 @@ ui <- navbarPage(
     )),
     fluidRow(
       column(
-        6,
+        5,
+        offset = 1,
         p(
           "Use this site to help you analyze the",
           em("Bombus"), "bumble bee data for resource
@@ -43,18 +44,16 @@ ui <- navbarPage(
         )
       ),
       column(
-        6,
-        img(src = "bombus_bifarius.jpg", align = "middle"),
-        tags$br(),
-        p(
-          em("Bombus bifarius"), "foraging for nectar. It's extended proboscis
-               is visible in the lower center of the image.",
-          tags$br(),
-          tags$a(
-            href = "https://commons.wikimedia.org/wiki/File:Bombus_bifarius_P1530268a.jpg",
-            "Photo credit: Robert Webster, Wikimedia Commons, CC-SA 4.0"
-          )
-        )
+        4,
+        tags$figure( 
+        img(src = "bombus_bifarius.jpg", align = "middle", width = "100%"),
+        tags$figcaption(em("Bombus bifarius"), "foraging for nectar. It's extended proboscis
+               is visible in the lower center of the image.", tags$a(
+          href = "https://commons.wikimedia.org/wiki/File:Bombus_bifarius_P1530268a.jpg",
+          "Photo credit: Robert Webster, Wikimedia Commons, CC-SA 4.0"
+        ))),
+        #tags$figcaption(em("Bombus bifarius"), "foraging for nectar. It's extended proboscis
+        #       is visible in the lower center of the image."),
       )
     )
   ),
